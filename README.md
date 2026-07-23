@@ -1,5 +1,5 @@
 # Team File Naming Convention
----
+
 ## General Rules
 - Use camelCase within each document section.
 - Separate document sections with an underscore _.
