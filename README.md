@@ -85,3 +85,111 @@ mass flow
 | Folder | `PascalCase / PascalCase` | `GasTurbine / CompressorAnalysis` |
 | Document | `camelCase_camelCase` | `hpc_firstStagePerformance.docx` |
 | Variable | `camelCase` | `compressorEfficiency` |
+
+
+---
+
+# Git Workflow
+
+## Branching Policy
+
+**DO NOT make changes directly to the `main` branch.**
+
+The `main` branch should always remain in a deployable, stable state. All development work must be performed in a separate branch and reviewed before being merged.
+
+### Standard Workflow (GitHub Desktop)
+
+1. **Pull the latest changes**
+   - Open GitHub Desktop.
+   - Ensure you are on the `main` branch.
+   - Select **Fetch origin** and then **Pull origin** if updates are available.
+
+2. **Create a new branch**
+   - Select **Current Branch** → **New Branch**.
+   - Name the branch according to the work being performed.
+
+   **Examples:**
+   ```
+   feature_updateCompressorData
+   fix_pressureCalculation
+   docs_namingConventionUpdate
+   ```
+
+3. **Switch to the new branch**
+   - Verify the new branch is selected before making any changes.
+
+4. **Make your changes**
+   - Edit project files as needed.
+   - Save your work.
+
+5. **Commit your changes**
+   - In GitHub Desktop, review the changed files.
+   - Enter a short, descriptive commit message.
+
+   **Examples:**
+   ```
+   Add compressor efficiency calculations
+   Fix pressure ratio equation
+   Update naming convention documentation
+   ```
+
+6. **Push the branch**
+   - Select **Push origin** to upload your branch to GitHub.
+
+7. **Create a Pull Request**
+   - Select **Create Pull Request** in GitHub Desktop (or on GitHub).
+   - Provide a brief description of the changes.
+   - Request a review if applicable.
+
+8. **Wait for Approval**
+   - Merge the Pull Request into `main` only after it has been reviewed and approved by one other member.
+   - Resolve any comments that my prevent merge.
+
+9. **Update your local repository**
+   - After the Pull Request is merged:
+     - Switch back to the `main` branch.
+     - Pull the latest changes.
+     - Delete the completed feature branch if it is no longer needed.
+
+## Branch Naming Convention
+
+Use lowercase prefixes followed by a descriptive camelCase name.
+
+| Type | Format | Example |
+|------|--------|---------|
+| New Feature | `feature_description` | `feature_addPerformanceCharts` |
+| Bug Fix | `fix_description` | `fix_pressureCalculation` |
+| Documentation | `docs_description` | `docs_updateNamingGuide` |
+| Refactor | `refactor_description` | `refactor_fileStructure` |
+
+## Commit Message Guidelines
+
+Keep commit messages short and descriptive.
+
+### Good Examples
+
+```
+Add turbine performance report
+Fix compressor efficiency calculation
+Update project documentation
+Refactor folder organization
+```
+
+### Avoid
+
+```
+Stuff
+Update
+Changes
+Fix
+asdf
+```
+
+## Important Rules
+
+- Never commit directly to the `main` branch.
+- Always create a new branch before making changes.
+- Pull the latest changes before creating a branch.
+- Keep Pull Requests focused on a single task whenever possible.
+- Write clear commit messages so project history remains easy to understand.
+- Delete completed branches after they have been merged.
