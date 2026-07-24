@@ -9,7 +9,7 @@
                                                                                                      
 ```
 
-# Team Naming Convention
+# Naming Conventions
 
 ## General Rules
 
