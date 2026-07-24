@@ -35,9 +35,8 @@ GasTurbine / CompressorAnalysis
 
 ## Document Naming Convention
 
-Document names must use **camelCase** for each section, separated by underscores.
-
-***NOTE:** Use meaningful, searchable descriptions.*
+- Document names must use **camelCase** for each section, separated by underscores.
+- Use meaningful, searchable descriptions.*
 
 `component_description`
 
@@ -105,7 +104,7 @@ The `main` branch should always remain in a deployable, stable state. All develo
    - Select **Fetch origin** and then **Pull origin** if updates are available.
 
 2. **Create a new branch**
-   - Select **Current Branch** → **New Branch**.
+   - Select **Current Branch** -> **New Branch**.
    - Name the branch according to the work being performed.
 
    **Examples:**
@@ -125,6 +124,7 @@ The `main` branch should always remain in a deployable, stable state. All develo
 5. **Commit your changes**
    - In GitHub Desktop, review the changed files.
    - Enter a short, descriptive commit message.
+   - **DO NOT COMMIT LARGE DATA FILES**
 
    **Examples:**
    ```
@@ -135,14 +135,16 @@ The `main` branch should always remain in a deployable, stable state. All develo
 
 6. **Push the branch**
    - Select **Push origin** to upload your branch to GitHub.
+   - If you have not fishished work still push to your branch to save your work online. This lets you continue from another computer.
 
 7. **Create a Pull Request**
+   - Only submit a Pill Request (PR) when you are done with work on your branch 
    - Select **Create Pull Request** in GitHub Desktop (or on GitHub).
    - Provide a brief description of the changes.
-   - Request a review if applicable.
+   - Request a review so changes can be merged. One reviewer is required to merge to main.
 
 8. **Wait for Approval**
-   - Merge the Pull Request into `main` only after it has been reviewed and approved by one other member.
+   - Merge the Pull Request into `main` only after it has been reviewed and approved by one other member. The approver may merge for you.
    - Resolve any comments that my prevent merge.
 
 9. **Update your local repository**
@@ -151,9 +153,14 @@ The `main` branch should always remain in a deployable, stable state. All develo
      - Pull the latest changes.
      - Delete the completed feature branch if it is no longer needed.
 
+
+## Updating your branch
+- If there are changes to the main branch while you are working on your own branch you can pull the changes to your branch by clicking `Ctrl + Shift + U` or by going to `Branch` -> `Update from Main`.
+
 ## Branch Naming Convention
 
-Use lowercase prefixes followed by a descriptive camelCase name.
+- Use lowercase prefixes followed by a descriptive camelCase name.
+- You can name based off the task you are making or any other name you see fit. Potential examples below.
 
 | Type | Format | Example |
 |------|--------|---------|
@@ -164,7 +171,8 @@ Use lowercase prefixes followed by a descriptive camelCase name.
 
 ## Commit Message Guidelines
 
-Keep commit messages short and descriptive.
+- Keep commit messages short and descriptive.
+- Break commits up, dont sumbit one megacommit. Check which files go together in a comit and describe the work you did.
 
 ### Good Examples
 
