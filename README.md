@@ -21,6 +21,7 @@
 - Keep names short, descriptive, and consistent.
 - Avoid special characters such as `@`, `#`, `$`, `%`, `&`, `*`, `(`, `)`, etc.
 - Use only letters, numbers, underscores (`_`), and periods (`.`) where appropriate.
+- Microsoft Suite Files will be kept on Sharepoint.
 
 ## Folder Naming Convention
 
