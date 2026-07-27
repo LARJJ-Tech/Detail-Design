@@ -9,196 +9,61 @@
                                                                                                      
 ```
 
-# Naming Conventions
+# NOTICE
 
-## General Rules
+**Course:** AERO 440 - Jet Propulsion Detail Design<br>
+**Adacemic Term:** Fall 2026
 
-- Use **camelCase** within each section of a file name and for variable names.
-- Use **PascalCase** for folder names.
-- Separate sections with an underscore (`_`).
-- **DO NOT** use spaces in folder or file names.
-- Capital letters are allowed, but **DO NOT** use all caps.
-- Keep names short, descriptive, and consistent.
-- Avoid special characters such as `@`, `#`, `$`, `%`, `&`, `*`, `(`, `)`, etc.
-- Use only letters, numbers, underscores (`_`), and periods (`.`) where appropriate.
-- Microsoft Suite Files will be kept on Sharepoint.
+Copyright © 2026 LARJJ Tech. All rights reserved.
 
-## Folder Naming Convention
+## Purpose
 
-- Folder names should clearly describe their contents and follow a logical hierarchy.
-- Use **PascalCase** for folder names.
-- **DO NOT** use spaces in folder names.
+This repository contains original work created by members of the LARJJ Tech Team as part of Embry-Riddle Aeronautical University's AERO 440 senior design course.
 
-### Example:
-```
-GasTurbine / CompressorAnalysis
-```
+## Academic Integrity
 
-## Document Naming Convention
+This repository is publicly viewable to document the team's design work and technical progress.
 
-- Document names must use **camelCase** for each section, separated by underscores.
-- Use meaningful, searchable descriptions.*
+Embry-Riddle students are expected to prepare and present their own work to satisfy academic requirements. Consistent with the University's Academic Integrity policy, users of this repository should not:
 
-`component_description`
+- Submit any portion of this work as their own.
+- Copy or reuse code, calculations, reports, documentation, figures, CAD models, or other project materials in academic work without proper authorization and attribution.
+- Use materials from this repository in a manner that constitutes plagiarism, cheating, fraud, or unauthorized over-sharing as defined by Embry-Riddle University's Student Code of Conduct.
 
-### Examples:
-```
-hpc_firstStagePerformance.docx
-lpc_efficiencySummary.xlsx
-gasTurbine_performanceReport.pdf
-```
+Users are responsible for ensuring that any use of this repository complies with the University's academic integrity policies.
 
-## Variable Naming Convention
+[ERAU Student Code of Conduct](https://erau.edu/student-experience/safety-and-policies/student-policies#Prohibited_Conduct)
 
-- Use **camelCase** for all variable names.
-- Variable names should clearly describe their purpose.
-- Avoid abbreviations unless they are widely understood (e.g., `rpm`, `temp`, `id`).
-- Do not use spaces or special characters.
-- Avoid single-letter variable names except for short loop indices.
+## Intellectual Property
 
-### Good Examples
+Except where otherwise noted, all original content in this repository remains the intellectual property of its respective authors.
 
-```
-massFlowRate
-compressorEfficiency
-inletTemperature
-pressureRatio
-stageCount
-```
+No license is granted to copy, modify, redistribute, or incorporate the original content of this repository into another project without prior written permission from the project maintainers.
 
-### Bad Examples
+## Third-Party Software
 
-```
-x
-temp1
-COMPRESSOR_TEMP
-pressure-ratio
-mass flow
-```
+This project may reference or utilize third-party software, including but not limited to:
+
+- MATLAB
+- GasTurb
+- ANSYS
+
+All trademarks, copyrights, and software licenses remain the property of their respective owners.
+
+## Disclaimer
+
+This repository is intended to document an academic engineering project for educational and portfolio purposes.
+
+The authors make no representations or warranties regarding the accuracy, completeness, or fitness of the information contained herein. Users assume all responsibility for any use of the materials provided. 
+
+## Acknowledgments
+
+The LARJJ Tech Team was formed through the merger of the **JAR Tech** and **Night Ravens** design teams from AERO 435 - Jet Propulsion Preliminary Design from the Spring 2026 Semester.  This repository builds upon the Preliminary Design work completed by those teams as part of the jet propulsion senior design class.
+
+The team also acknowledges the course faculty, Dr. Luis Ferrer-Vidal Espana-Heredia for providing the project Request for Proposal (RFP), calculation templates, report templates, and other instructional resources used in support of this project. We thank Dr. Luis Ferrer-Vidal Espana-Heredia for his professional expertise and guidance throughout the project.
 
 ---
 
-# Quick Reference
+# Team Members
 
-| Item | Convention | Example |
-|------|------------|---------|
-| Folder | `PascalCase / PascalCase` | `GasTurbine / CompressorAnalysis` |
-| Document | `camelCase_camelCase` | `hpc_firstStagePerformance.docx` |
-| Variable | `camelCase` | `compressorEfficiency` |
-
-
----
-
-# Git Workflow
-
-## Branching Policy
-
-**DO NOT make changes directly to the `main` branch.**
-
-The `main` branch should always remain in a deployable, stable state. All development work must be performed in a separate branch and reviewed before being merged.
-
-### Standard Workflow (GitHub Desktop)
-
-1. **Pull the latest changes**
-   - Open GitHub Desktop.
-   - Ensure you are on the `main` branch.
-   - Select **Fetch origin** and then **Pull origin** if updates are available.
-
-2. **Create a new branch**
-   - Select **Current Branch** -> **New Branch**.
-   - Name the branch according to the work being performed.
-
-   **Examples:**
-   ```
-   feature_updateCompressorData
-   fix_pressureCalculation
-   docs_namingConventionUpdate
-   ```
-
-3. **Switch to the new branch**
-   - Verify the new branch is selected before making any changes.
-
-4. **Make your changes**
-   - Edit project files as needed.
-   - Save your work.
-
-5. **Commit your changes**
-   - In GitHub Desktop, review the changed files.
-   - Enter a short, descriptive commit message.
-   - **DO NOT COMMIT LARGE DATA FILES**
-
-   **Examples:**
-   ```
-   Add compressor efficiency calculations
-   Fix pressure ratio equation
-   Update naming convention documentation
-   ```
-
-6. **Push the branch**
-   - Select **Push origin** to upload your branch to GitHub.
-   - If you have not fishished work still push to your branch to save your work online. This lets you continue from another computer.
-
-7. **Create a Pull Request**
-   - Only submit a Pill Request (PR) when you are done with work on your branch 
-   - Select **Create Pull Request** in GitHub Desktop (or on GitHub).
-   - Provide a brief description of the changes.
-   - Request a review so changes can be merged. One reviewer is required to merge to main.
-
-8. **Wait for Approval**
-   - Merge the Pull Request into `main` only after it has been reviewed and approved by one other member. The approver may merge for you.
-   - Resolve any comments that my prevent merge.
-
-9. **Update your local repository**
-   - After the Pull Request is merged:
-     - Switch back to the `main` branch.
-     - Pull the latest changes.
-     - Delete the completed feature branch if it is no longer needed.
-
-
-## Updating your branch
-- If there are changes to the main branch while you are working on your own branch you can pull the changes to your branch by clicking `Ctrl + Shift + U` or by going to `Branch` -> `Update from Main`.
-
-## Branch Naming Convention
-
-- Use lowercase prefixes followed by a descriptive camelCase name.
-- You can name based off the task you are making or any other name you see fit. Potential examples below.
-
-| Type | Format | Example |
-|------|--------|---------|
-| New Feature | `feature_description` | `feature_addPerformanceCharts` |
-| Bug Fix | `fix_description` | `fix_pressureCalculation` |
-| Documentation | `docs_description` | `docs_updateNamingGuide` |
-| Refactor | `refactor_description` | `refactor_fileStructure` |
-
-## Commit Message Guidelines
-
-- Keep commit messages short and descriptive.
-- Break commits up, dont sumbit one megacommit. Check which files go together in a comit and describe the work you did.
-
-### Good Examples
-
-```
-Add turbine performance report
-Fix compressor efficiency calculation
-Update project documentation
-Refactor folder organization
-```
-
-### Avoid
-
-```
-Stuff
-Update
-Changes
-Fix
-asdf
-```
-
-## Important Rules
-
-- Never commit directly to the `main` branch.
-- Always create a new branch before making changes.
-- Pull the latest changes before creating a branch.
-- Keep Pull Requests focused on a single task whenever possible.
-- Write clear commit messages so project history remains easy to understand.
-- Delete completed branches after they have been merged.
+Project guidelines are available in the project [Wiki](https://github.com/LARJJ-Tech/Detail-Design/wiki).
