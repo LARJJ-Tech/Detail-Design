@@ -1,0 +1,117 @@
+name: Repository Checks
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  markdown:
+    name: Markdown lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Check Markdown files
+        uses: DavidAnson/markdownlint-cli2-action@v23
+        with:
+          globs: |
+            **/*.md
+            !Data/LocalData/**
+
+  filenames:
+    name: Filename checks
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Reject spaces in file and folder names
+        shell: bash
+        run: |
+          invalid_paths="$(find . -not -path './.git/*' -print | grep ' ' || true)"
+
+          if [ -n "$invalid_paths" ]; then
+            echo "::error::Spaces were found in file or folder names:"
+            echo "$invalid_paths"
+            exit 1
+          fi
+
+          echo "No spaces found in paths."
+
+      - name: Reject selected special characters
+        shell: bash
+        run: |
+          invalid_paths="$(
+            find . -not -path './.git/*' -print |
+              grep -E '[@#$%&*()]' || true
+          )"
+
+          if [ -n "$invalid_paths" ]; then
+            echo "::error::Special characters were found in paths:"
+            echo "$invalid_paths"
+            exit 1
+          fi
+
+          echo "No prohibited special characters found."
+
+  large-files:
+    name: Large file checks
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Reject files larger than 20 MB
+        shell: bash
+        run: |
+          large_files="$(find . \
+            -not -path './.git/*' \
+            -type f \
+            -size +20M \
+            -print)"
+
+          if [ -n "$large_files" ]; then
+            echo "::error::Files larger than 20 MB were found:"
+            echo "$large_files"
+            echo "Store generated or local data outside Git."
+            exit 1
+          fi
+
+          echo "No oversized files found."
+
+  local-data:
+    name: Local data checks
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Ensure LocalData contains no tracked outputs
+        shell: bash
+        run: |
+          tracked_files="$(
+            git ls-files Data/LocalData |
+              grep -vE '(^|/)\.(gitkeep|placeholder)$' || true
+          )"
+
+          if [ -n "$tracked_files" ]; then
+            echo "::error::Local data files are being tracked:"
+            echo "$tracked_files"
+            echo "Only a placeholder file should be committed."
+            exit 1
+          fi
+
+          echo "No local output files are tracked."

@@ -1,0 +1,752 @@
+name: Daily Project Maintenance
+
+on:
+  schedule:
+    - cron: "55 23 * * *"
+      timezone: "America/New_York"
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  maintain-project:
+    name: Maintain Project dates and overdue labels
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Reconcile Project items
+        uses: actions/github-script@v9
+        with:
+          github-token: ${{ secrets.PROJECTS_TOKEN }}
+          retries: 3
+          script: |
+            const PROJECT_OWNER = "LARJJ-Tech";
+            const PROJECT_NUMBER = 4;
+
+            /*
+             * This is still a GitHub Project field.
+             */
+            const STATUS_FIELD_NAME = "Status";
+            const IN_PROGRESS_OPTION_NAME = "In Progress";
+
+            /*
+             * These are organization Issue Fields, not Project fields.
+             *
+             * The matching below is case-insensitive, but spaces and
+             * punctuation must otherwise match.
+             */
+            const START_DATE_FIELD_NAME = "Start Date";
+            const TARGET_DATE_FIELD_NAME = "Target Date";
+            const COMPLETION_DATE_FIELD_NAME = "Completion Date";
+
+            const OVERDUE_LABEL_NAME = "Overdue";
+            const TEAM_TIME_ZONE = "America/New_York";
+
+            const API_HEADERS = {
+              accept: "application/vnd.github+json",
+              "X-GitHub-Api-Version": "2026-03-10",
+            };
+
+            function formatTeamDate(value) {
+              const parts = new Intl.DateTimeFormat("en-US", {
+                timeZone: TEAM_TIME_ZONE,
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+              }).formatToParts(new Date(value));
+
+              const values = Object.fromEntries(
+                parts.map(part => [part.type, part.value])
+              );
+
+              return `${values.year}-${values.month}-${values.day}`;
+            }
+
+            function namesMatch(actual, expected) {
+              return actual?.trim().toLowerCase() ===
+                expected.trim().toLowerCase();
+            }
+
+            const today = formatTeamDate(new Date());
+
+            core.info(`Team date: ${today}`);
+
+            /*
+             * Retrieve the organization-level Issue Field definitions.
+             */
+            const issueFieldsResponse = await github.request(
+              "GET /orgs/{org}/issue-fields",
+              {
+                org: PROJECT_OWNER,
+                headers: API_HEADERS,
+              }
+            );
+
+            const issueFields = issueFieldsResponse.data;
+
+            const startDateField = issueFields.find(
+              field => namesMatch(field.name, START_DATE_FIELD_NAME)
+            );
+
+            const targetDateField = issueFields.find(
+              field => namesMatch(field.name, TARGET_DATE_FIELD_NAME)
+            );
+
+            const completionDateField = issueFields.find(
+              field => namesMatch(
+                field.name,
+                COMPLETION_DATE_FIELD_NAME
+              )
+            );
+
+            const requiredIssueFields = [
+              [START_DATE_FIELD_NAME, startDateField],
+              [TARGET_DATE_FIELD_NAME, targetDateField],
+              [COMPLETION_DATE_FIELD_NAME, completionDateField],
+            ];
+
+            for (const [fieldName, field] of requiredIssueFields) {
+              if (!field) {
+                core.setFailed(
+                  `Could not find organization Issue Field ` +
+                  `"${fieldName}".`
+                );
+
+                core.info("Issue fields visible to this token:");
+
+                for (const visibleField of issueFields) {
+                  core.info(
+                    `- ${visibleField.name} (${visibleField.data_type})`
+                  );
+                }
+
+                return;
+              }
+
+              if (field.data_type !== "date") {
+                core.setFailed(
+                  `"${field.name}" exists, but it is not a date field.`
+                );
+                return;
+              }
+            }
+
+            core.info(
+              `Start Date Issue Field ID: ${startDateField.id}`
+            );
+
+            core.info(
+              `Target Date Issue Field ID: ${targetDateField.id}`
+            );
+
+            core.info(
+              `Completion Date Issue Field ID: ` +
+              `${completionDateField.id}`
+            );
+
+            /*
+             * Retrieve the Project and its Status field.
+             */
+            const projectData = await github.graphql(`
+              query($owner: String!, $number: Int!) {
+                organization(login: $owner) {
+                  projectV2(number: $number) {
+                    id
+                    title
+
+                    fields(first: 100) {
+                      nodes {
+                        ... on ProjectV2SingleSelectField {
+                          id
+                          name
+                          dataType
+
+                          options {
+                            id
+                            name
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            `, {
+              owner: PROJECT_OWNER,
+              number: PROJECT_NUMBER,
+            });
+
+            const project = projectData.organization?.projectV2;
+
+            if (!project) {
+              core.setFailed(
+                `Could not find Project ` +
+                `${PROJECT_OWNER}/${PROJECT_NUMBER}.`
+              );
+              return;
+            }
+
+            core.info(`Project: ${project.title}`);
+
+            const projectFields =
+              project.fields.nodes.filter(Boolean);
+
+            const statusField = projectFields.find(
+              field => namesMatch(field.name, STATUS_FIELD_NAME)
+            );
+
+            if (!statusField) {
+              core.setFailed(
+                `Could not find Project field ` +
+                `"${STATUS_FIELD_NAME}".`
+              );
+              return;
+            }
+
+            if (statusField.dataType !== "SINGLE_SELECT") {
+              core.setFailed(
+                `"${STATUS_FIELD_NAME}" exists, but it is not ` +
+                "a single-select Project field."
+              );
+              return;
+            }
+
+            const inProgressOption = statusField.options?.find(
+              option =>
+                namesMatch(option.name, IN_PROGRESS_OPTION_NAME)
+            );
+
+            if (!inProgressOption) {
+              core.setFailed(
+                `Could not find Project Status option ` +
+                `"${IN_PROGRESS_OPTION_NAME}".`
+              );
+              return;
+            }
+
+            /*
+             * Retrieve all Issue Field values currently set on an issue.
+             */
+            async function getIssueFieldValues(
+              owner,
+              repository,
+              issueNumber
+            ) {
+              const response = await github.request(
+                "GET /repos/{owner}/{repo}/issues/{issue_number}" +
+                "/issue-field-values",
+                {
+                  owner,
+                  repo: repository,
+                  issue_number: issueNumber,
+                  per_page: 100,
+                  headers: API_HEADERS,
+                }
+              );
+
+              return response.data;
+            }
+
+            /*
+             * Add or replace one Issue Field value without replacing the
+             * issue's other Issue Field values.
+             */
+            async function setIssueDateField(
+              owner,
+              repository,
+              issueNumber,
+              fieldId,
+              date
+            ) {
+              await github.request(
+                "POST /repos/{owner}/{repo}/issues/{issue_number}" +
+                "/issue-field-values",
+                {
+                  owner,
+                  repo: repository,
+                  issue_number: issueNumber,
+                  issue_field_values: [
+                    {
+                      field_id: fieldId,
+                      value: date,
+                    },
+                  ],
+                  headers: API_HEADERS,
+                }
+              );
+            }
+
+            /*
+             * Remove only the specified Issue Field value.
+             */
+            async function clearIssueField(
+              owner,
+              repository,
+              issueNumber,
+              fieldId
+            ) {
+              try {
+                await github.request(
+                  "DELETE /repos/{owner}/{repo}/issues/{issue_number}" +
+                  "/issue-field-values/{issue_field_id}",
+                  {
+                    owner,
+                    repo: repository,
+                    issue_number: issueNumber,
+                    issue_field_id: fieldId,
+                    headers: API_HEADERS,
+                  }
+                );
+              } catch (error) {
+                /*
+                 * A 404 means this field does not currently have a value.
+                 */
+                if (error.status !== 404) {
+                  throw error;
+                }
+              }
+            }
+
+            async function addOverdueLabel(
+              owner,
+              repository,
+              issueNumber
+            ) {
+              await github.rest.issues.addLabels({
+                owner,
+                repo: repository,
+                issue_number: issueNumber,
+                labels: [OVERDUE_LABEL_NAME],
+              });
+            }
+
+            async function removeOverdueLabel(
+              owner,
+              repository,
+              issueNumber
+            ) {
+              try {
+                await github.rest.issues.removeLabel({
+                  owner,
+                  repo: repository,
+                  issue_number: issueNumber,
+                  name: OVERDUE_LABEL_NAME,
+                });
+              } catch (error) {
+                if (error.status !== 404) {
+                  throw error;
+                }
+              }
+            }
+
+            let cursor = null;
+            let hasNextPage = true;
+
+            let itemsChecked = 0;
+            let nonIssueItemsSkipped = 0;
+
+            let startDatesSet = 0;
+            let completionDatesSet = 0;
+            let completionDatesUpdated = 0;
+            let completionDatesCleared = 0;
+
+            let overdueLabelsAdded = 0;
+            let overdueLabelsRemoved = 0;
+            let unchanged = 0;
+
+            while (hasNextPage) {
+              const itemData = await github.graphql(`
+                query(
+                  $owner: String!
+                  $number: Int!
+                  $cursor: String
+                ) {
+                  organization(login: $owner) {
+                    projectV2(number: $number) {
+                      items(first: 100, after: $cursor) {
+                        pageInfo {
+                          hasNextPage
+                          endCursor
+                        }
+
+                        nodes {
+                          id
+
+                          content {
+                            ... on Issue {
+                              id
+                              number
+                              title
+                              state
+                              closedAt
+
+                              labels(first: 100) {
+                                nodes {
+                                  name
+                                }
+                              }
+
+                              repository {
+                                name
+                                nameWithOwner
+
+                                owner {
+                                  login
+                                }
+                              }
+                            }
+
+                            ... on PullRequest {
+                              number
+                              title
+                            }
+
+                            ... on DraftIssue {
+                              title
+                            }
+                          }
+
+                          fieldValues(first: 100) {
+                            nodes {
+                              ... on ProjectV2ItemFieldSingleSelectValue {
+                                optionId
+                                name
+
+                                field {
+                                  ... on ProjectV2FieldCommon {
+                                    id
+                                    name
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              `, {
+                owner: PROJECT_OWNER,
+                number: PROJECT_NUMBER,
+                cursor,
+              });
+
+              const itemsConnection =
+                itemData.organization?.projectV2?.items;
+
+              if (!itemsConnection) {
+                core.setFailed("Could not retrieve Project items.");
+                return;
+              }
+
+              for (const item of itemsConnection.nodes) {
+                itemsChecked++;
+
+                const content = item.content;
+
+                /*
+                 * Only Issues have the state, closedAt, labels, and full
+                 * repository details requested above.
+                 */
+                const isIssue =
+                  Boolean(content?.id) &&
+                  typeof content?.state === "string" &&
+                  Boolean(content?.repository?.name);
+
+                if (!isIssue) {
+                  nonIssueItemsSkipped++;
+                  continue;
+                }
+
+                const owner = content.repository.owner.login;
+                const repository = content.repository.name;
+                const issueNumber = content.number;
+
+                const issueReference =
+                  `${content.repository.nameWithOwner}` +
+                  `#${issueNumber}`;
+
+                const title =
+                  content.title ?? `Issue ${issueReference}`;
+
+                const projectValues =
+                  item.fieldValues.nodes.filter(Boolean);
+
+                const statusValue = projectValues.find(
+                  value => value.field?.id === statusField.id
+                );
+
+                const isInProgress =
+                  statusValue?.optionId === inProgressOption.id;
+
+                const isOpenIssue =
+                  content.state === "OPEN";
+
+                const isClosedIssue =
+                  content.state === "CLOSED" &&
+                  Boolean(content.closedAt);
+
+                /*
+                 * Issue Fields are stored on the issue itself, so retrieve
+                 * them separately from the Project item fields.
+                 */
+                const currentIssueFields =
+                  await getIssueFieldValues(
+                    owner,
+                    repository,
+                    issueNumber
+                  );
+
+                const startDateValue = currentIssueFields.find(
+                  value =>
+                    value.issue_field_id === startDateField.id
+                );
+
+                const targetDateValue = currentIssueFields.find(
+                  value =>
+                    value.issue_field_id === targetDateField.id
+                );
+
+                const completionDateValue =
+                  currentIssueFields.find(
+                    value =>
+                      value.issue_field_id ===
+                      completionDateField.id
+                  );
+
+                const existingStartDate =
+                  startDateValue?.value ?? null;
+
+                const targetDate =
+                  targetDateValue?.value ?? null;
+
+                const existingCompletionDate =
+                  completionDateValue?.value ?? null;
+
+                let itemChanged = false;
+
+                /*
+                 * Status comes from the GitHub Project.
+                 * Start Date is written to the organization Issue Field.
+                 */
+                if (isInProgress && !existingStartDate) {
+                  await setIssueDateField(
+                    owner,
+                    repository,
+                    issueNumber,
+                    startDateField.id,
+                    today
+                  );
+
+                  core.info(
+                    `Set Start Date to ${today} for ` +
+                    `${issueReference}: ${title}`
+                  );
+
+                  startDatesSet++;
+                  itemChanged = true;
+                }
+
+                /*
+                 * An open issue should not retain a completion date.
+                 */
+                if (isOpenIssue && existingCompletionDate) {
+                  await clearIssueField(
+                    owner,
+                    repository,
+                    issueNumber,
+                    completionDateField.id
+                  );
+
+                  core.info(
+                    `Cleared Completion Date for open issue ` +
+                    `${issueReference}: ${title}`
+                  );
+
+                  completionDatesCleared++;
+                  itemChanged = true;
+                }
+
+                /*
+                 * closedAt reflects the most recent closure.
+                 *
+                 * When an issue is reopened and closed again, the date is
+                 * replaced when it differs from the current Issue Field.
+                 */
+                if (isClosedIssue) {
+                  const latestCompletionDate =
+                    formatTeamDate(content.closedAt);
+
+                  if (!existingCompletionDate) {
+                    await setIssueDateField(
+                      owner,
+                      repository,
+                      issueNumber,
+                      completionDateField.id,
+                      latestCompletionDate
+                    );
+
+                    core.info(
+                      `Set Completion Date to ` +
+                      `${latestCompletionDate} for ` +
+                      `${issueReference}: ${title}`
+                    );
+
+                    completionDatesSet++;
+                    itemChanged = true;
+                  } else if (
+                    existingCompletionDate !== latestCompletionDate
+                  ) {
+                    await setIssueDateField(
+                      owner,
+                      repository,
+                      issueNumber,
+                      completionDateField.id,
+                      latestCompletionDate
+                    );
+
+                    core.info(
+                      `Updated Completion Date from ` +
+                      `${existingCompletionDate} to ` +
+                      `${latestCompletionDate} for ` +
+                      `${issueReference}: ${title}`
+                    );
+
+                    completionDatesUpdated++;
+                    itemChanged = true;
+                  }
+                }
+
+                /*
+                 * Target Date is read from the organization Issue Field.
+                 *
+                 * The issue becomes overdue the day after its Target Date.
+                 */
+                const hasOverdueLabel =
+                  content.labels.nodes.some(
+                    label =>
+                      namesMatch(
+                        label.name,
+                        OVERDUE_LABEL_NAME
+                      )
+                  );
+
+                const shouldBeOverdue =
+                  isOpenIssue &&
+                  Boolean(targetDate) &&
+                  targetDate < today;
+
+                if (shouldBeOverdue && !hasOverdueLabel) {
+                  try {
+                    await addOverdueLabel(
+                      owner,
+                      repository,
+                      issueNumber
+                    );
+
+                    core.info(
+                      `Added "${OVERDUE_LABEL_NAME}" to ` +
+                      `${issueReference}: ${title}`
+                    );
+
+                    overdueLabelsAdded++;
+                    itemChanged = true;
+                  } catch (error) {
+                    if (error.status === 422) {
+                      core.warning(
+                        `Could not add "${OVERDUE_LABEL_NAME}" ` +
+                        `to ${issueReference}. Confirm that the ` +
+                        "label exists in that repository."
+                      );
+                    } else {
+                      throw error;
+                    }
+                  }
+                }
+
+                if (!shouldBeOverdue && hasOverdueLabel) {
+                  await removeOverdueLabel(
+                    owner,
+                    repository,
+                    issueNumber
+                  );
+
+                  core.info(
+                    `Removed "${OVERDUE_LABEL_NAME}" from ` +
+                    `${issueReference}: ${title}`
+                  );
+
+                  overdueLabelsRemoved++;
+                  itemChanged = true;
+                }
+
+                if (!itemChanged) {
+                  unchanged++;
+                }
+              }
+
+              hasNextPage =
+                itemsConnection.pageInfo.hasNextPage;
+
+              cursor =
+                itemsConnection.pageInfo.endCursor;
+            }
+
+            await core.summary
+              .addHeading("Daily Project Maintenance")
+              .addTable([
+                [
+                  { data: "Result", header: true },
+                  { data: "Count", header: true },
+                ],
+                [
+                  "Project items checked",
+                  String(itemsChecked),
+                ],
+                [
+                  "Non-issue items skipped",
+                  String(nonIssueItemsSkipped),
+                ],
+                [
+                  "Start Dates populated",
+                  String(startDatesSet),
+                ],
+                [
+                  "Completion Dates populated",
+                  String(completionDatesSet),
+                ],
+                [
+                  "Completion Dates updated",
+                  String(completionDatesUpdated),
+                ],
+                [
+                  "Completion Dates cleared",
+                  String(completionDatesCleared),
+                ],
+                [
+                  "Overdue labels added",
+                  String(overdueLabelsAdded),
+                ],
+                [
+                  "Overdue labels removed",
+                  String(overdueLabelsRemoved),
+                ],
+                [
+                  "Issues unchanged",
+                  String(unchanged),
+                ],
+              ])
+              .write();
+
+            core.info(
+              `Checked ${itemsChecked} Project item(s); ` +
+              `set ${startDatesSet} Start Date(s); ` +
+              `set ${completionDatesSet} Completion Date(s); ` +
+              `updated ${completionDatesUpdated} Completion Date(s); ` +
+              `cleared ${completionDatesCleared} Completion Date(s); ` +
+              `added ${overdueLabelsAdded} Overdue label(s); ` +
+              `removed ${overdueLabelsRemoved} Overdue label(s).`
+            );
