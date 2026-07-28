@@ -68,6 +68,7 @@ jobs:
             ".editorconfig"
             ".markdownlint-cli2.jsonc"
             ".placeholder"
+            "Detail-Design.wiki"
           )
 
           is_exception() {
