@@ -28,7 +28,8 @@
 - Use **PascalCase** for folder names.
 - **DO NOT** use spaces in folder names.
 
-### Example:
+### Example
+
 ```
 GasTurbine / CompressorAnalysis
 ```
@@ -41,7 +42,8 @@ Document names must use **camelCase** for each section, separated by underscores
 
 `component_description`
 
-### Examples:
+### Examples
+
 ```
 hpc_firstStagePerformance.docx
 lpc_efficiencySummary.xlsx
@@ -81,11 +83,10 @@ mass flow
 # Quick Reference
 
 | Item | Convention | Example |
-|------|------------|---------|
+| ------ | ------------ | --------- |
 | Folder | `PascalCase / PascalCase` | `GasTurbine / CompressorAnalysis` |
 | Document | `camelCase_camelCase` | `hpc_firstStagePerformance.docx` |
 | Variable | `camelCase` | `compressorEfficiency` |
-
 
 ---
 
@@ -109,6 +110,7 @@ The `main` branch should always remain in a deployable, stable state. All develo
    - Name the branch according to the work being performed.
 
    **Examples:**
+
    ```
    feature_updateCompressorData
    fix_pressureCalculation
@@ -127,6 +129,7 @@ The `main` branch should always remain in a deployable, stable state. All develo
    - Enter a short, descriptive commit message.
 
    **Examples:**
+
    ```
    Add compressor efficiency calculations
    Fix pressure ratio equation
@@ -156,7 +159,7 @@ The `main` branch should always remain in a deployable, stable state. All develo
 Use lowercase prefixes followed by a descriptive camelCase name.
 
 | Type | Format | Example |
-|------|--------|---------|
+| ------ | -------- | --------- |
 | New Feature | `feature_description` | `feature_addPerformanceCharts` |
 | Bug Fix | `fix_description` | `fix_pressureCalculation` |
 | Documentation | `docs_description` | `docs_updateNamingGuide` |

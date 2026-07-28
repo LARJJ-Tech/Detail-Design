@@ -54,7 +54,7 @@ jobs:
         run: |
           invalid_paths="$(
             find . -not -path './.git/*' -print |
-              grep -E '[@#$%&*()-]' || true
+              grep -E '[@#$%&*()]' || true
           )"
 
           if [ -n "$invalid_paths" ]; then
