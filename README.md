@@ -110,7 +110,7 @@ The `main` branch should always remain in a deployable, stable state. All develo
    - Name the branch according to the work being performed.
 
    **Examples:**
-   
+
    ```
    feature_updateCompressorData
    fix_pressureCalculation
@@ -129,7 +129,7 @@ The `main` branch should always remain in a deployable, stable state. All develo
    - Enter a short, descriptive commit message.
 
    **Examples:**
-   
+
    ```
    Add compressor efficiency calculations
    Fix pressure ratio equation
