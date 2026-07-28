@@ -1,0 +1,191 @@
+name: Close Completed Parent Issues
+
+on:
+  issues:
+    types:
+      - closed
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  close-parent:
+    name: Close completed parent issues
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Close parent when all sub-issues are closed
+        uses: actions/github-script@v9
+        with:
+          github-token: ${{ github.token }}
+          retries: 3
+          script: |
+            /*
+             * Begin with the issue that triggered this workflow.
+             *
+             * If its parent is complete, close that parent. Then repeat
+             * upward so nested parent issues can also be closed.
+             */
+            const MANUAL_CLOSE_LABEL = "Do Not Auto Close";
+             
+            let currentIssueId = context.payload.issue.node_id;
+
+            while (currentIssueId) {
+              const result = await github.graphql(`
+                query($issueId: ID!) {
+                  node(id: $issueId) {
+                    ... on Issue {
+                      id
+                      number
+                      title
+                      state
+
+                      parent {
+                        id
+                        number
+                        title
+                        state
+
+                        labels(first: 20) {
+                          nodes {
+                            name
+                          }
+                        }
+
+                        repository {
+                          nameWithOwner
+                        }
+
+                        subIssues(first: 100) {
+                          totalCount
+
+                          nodes {
+                            id
+                            number
+                            title
+                            state
+
+                            repository {
+                              nameWithOwner
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              `, {
+                issueId: currentIssueId,
+              });
+
+              const currentIssue = result.node;
+
+              if (!currentIssue) {
+                core.info("The triggering item was not an issue.");
+                break;
+              }
+
+              const parent = currentIssue.parent;
+
+              if (!parent) {
+                core.info(
+                  `Issue #${currentIssue.number} has no parent issue.`
+                );
+                break;
+              }
+
+              /*
+               * This workflow reads at most 100 sub-issues. GitHub currently
+               * allows up to 100 sub-issues per parent.
+               */
+              if (parent.subIssues.totalCount !== parent.subIssues.nodes.length) {
+                core.setFailed(
+                  `Could not load every sub-issue for ` +
+                  `${parent.repository.nameWithOwner}#${parent.number}.`
+                );
+                break;
+              }
+
+              const subIssues = parent.subIssues.nodes;
+              const openSubIssues = subIssues.filter(
+                issue => issue.state !== "CLOSED"
+              );
+
+              core.info(
+                `Parent ${parent.repository.nameWithOwner}#${parent.number} ` +
+                `has ${subIssues.length} sub-issue(s), ` +
+                `${openSubIssues.length} of which remain open.`
+              );
+
+              if (parent.subIssues.totalCount === 0) {
+                core.info("Parent has no sub-issues. Nothing to do.");
+                break;
+              }
+
+              if (openSubIssues.length > 0) {
+                core.info("Not all sub-issues are closed.");
+
+                for (const issue of openSubIssues) {
+                  core.info(
+                    `Still open: ${issue.repository.nameWithOwner}` +
+                    `#${issue.number} — ${issue.title}`
+                  );
+                }
+
+                break;
+              }
+              
+              const manualClose = parent.labels.nodes.some(
+                label => label.name === MANUAL_CLOSE_LABEL
+              );
+
+              if (manualClose) {
+                core.notice(
+                  `Parent ${parent.repository.nameWithOwner}` +
+                  `#${parent.number} has the "${MANUAL_CLOSE_LABEL}" label. ` +
+                  "Skipping automatic closure."
+                );
+
+                break;
+              }
+
+              if (parent.state === "CLOSED") {
+                core.info(
+                  `Parent ${parent.repository.nameWithOwner}` +
+                  `#${parent.number} is already closed.`
+                );
+
+                currentIssueId = parent.id;
+                continue;
+              }
+
+              await github.graphql(`
+                mutation($issueId: ID!) {
+                  closeIssue(input: { issueId: $issueId }) {
+                    issue {
+                      number
+                      title
+                      state
+
+                      repository {
+                        nameWithOwner
+                      }
+                    }
+                  }
+                }
+              `, {
+                issueId: parent.id,
+              });
+
+              core.notice(
+                `Closed parent ${parent.repository.nameWithOwner}` +
+                `#${parent.number}: ${parent.title}`
+              );
+
+              /*
+               * Continue upward in case this parent is itself the final
+               * open sub-issue of another parent.
+               */
+              currentIssueId = parent.id;
+            }

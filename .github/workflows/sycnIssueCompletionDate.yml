@@ -1,0 +1,430 @@
+name: Sync Issue Completion Date
+
+on:
+  issues:
+    types:
+      - closed
+      - reopened
+
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: Issue number to test
+        required: true
+        type: number
+
+permissions:
+  contents: read
+
+jobs:
+  sync-completion-date:
+    name: Sync completion date
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Update issue Completion Date
+        uses: actions/github-script@v9
+        env:
+          MANUAL_ISSUE_NUMBER: ${{ inputs.issue_number }}
+        with:
+          github-token: ${{ secrets.PROJECTS_TOKEN }}
+          retries: 3
+          script: |
+            const PROJECT_OWNER = "LARJJ-Tech";
+            const PROJECT_NUMBER = 4;
+
+            /*
+             * This is an organization Issue Field, not a Project field.
+             * Match the name shown in your organization settings.
+             */
+            const COMPLETION_DATE_FIELD_NAME = "Completion Date";
+
+            const TEAM_TIME_ZONE = "America/New_York";
+
+            const API_HEADERS = {
+              accept: "application/vnd.github+json",
+              "X-GitHub-Api-Version": "2026-03-10",
+            };
+
+            /*
+             * For an issue event, use the issue that triggered the workflow.
+             * For manual testing, use the issue number entered in the
+             * Actions interface.
+             */
+            const issueNumber =
+              context.payload.issue?.number ??
+              Number(process.env.MANUAL_ISSUE_NUMBER);
+
+            if (!issueNumber) {
+              core.setFailed("No valid issue number was provided.");
+              return;
+            }
+
+            const repositoryOwner = context.repo.owner;
+            const repositoryName = context.repo.repo;
+
+            function formatTeamDate(value) {
+              const parts = new Intl.DateTimeFormat("en-US", {
+                timeZone: TEAM_TIME_ZONE,
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+              }).formatToParts(new Date(value));
+
+              const values = Object.fromEntries(
+                parts.map(part => [part.type, part.value])
+              );
+
+              return `${values.year}-${values.month}-${values.day}`;
+            }
+
+            function namesMatch(actual, expected) {
+              return (
+                actual?.trim().toLowerCase() ===
+                expected.trim().toLowerCase()
+              );
+            }
+
+            /*
+             * Retrieve the issue and its connected Project items.
+             *
+             * This is used only to confirm that the issue belongs to
+             * LARJJ-Tech Project 3. The Completion Date itself is stored
+             * directly on the issue.
+             */
+            const issueData = await github.graphql(`
+              query(
+                $owner: String!
+                $repository: String!
+                $issueNumber: Int!
+              ) {
+                repository(owner: $owner, name: $repository) {
+                  issue(number: $issueNumber) {
+                    id
+                    number
+                    title
+                    state
+                    closedAt
+
+                    projectItems(first: 100) {
+                      nodes {
+                        id
+
+                        project {
+                          id
+                          number
+                          title
+
+                          owner {
+                            ... on Organization {
+                              login
+                            }
+
+                            ... on User {
+                              login
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            `, {
+              owner: repositoryOwner,
+              repository: repositoryName,
+              issueNumber,
+            });
+
+            const issue = issueData.repository?.issue;
+
+            if (!issue) {
+              core.setFailed(
+                `Could not find ${repositoryOwner}/` +
+                `${repositoryName}#${issueNumber}.`
+              );
+              return;
+            }
+
+            const projectItem = issue.projectItems.nodes.find(
+              item =>
+                item.project?.number === PROJECT_NUMBER &&
+                namesMatch(
+                  item.project?.owner?.login,
+                  PROJECT_OWNER
+                )
+            );
+
+            if (!projectItem) {
+              core.info(
+                `${repositoryOwner}/${repositoryName}#${issue.number} ` +
+                `is not in Project ${PROJECT_OWNER}/${PROJECT_NUMBER}. ` +
+                "No Completion Date change was made."
+              );
+              return;
+            }
+
+            core.info(
+              `Issue belongs to Project ` +
+              `${PROJECT_OWNER}/${PROJECT_NUMBER}: ` +
+              `${projectItem.project.title}`
+            );
+
+            /*
+             * Retrieve the organization-level Issue Field definitions.
+             */
+            const issueFieldsResponse = await github.request(
+              "GET /orgs/{org}/issue-fields",
+              {
+                org: PROJECT_OWNER,
+                headers: API_HEADERS,
+              }
+            );
+
+            const issueFields = issueFieldsResponse.data;
+
+            const completionDateField = issueFields.find(
+              field =>
+                namesMatch(
+                  field.name,
+                  COMPLETION_DATE_FIELD_NAME
+                )
+            );
+
+            if (!completionDateField) {
+              core.setFailed(
+                `Could not find organization Issue Field ` +
+                `"${COMPLETION_DATE_FIELD_NAME}".`
+              );
+
+              core.info("Issue Fields visible to this token:");
+
+              for (const field of issueFields) {
+                core.info(
+                  `- ${field.name} (${field.data_type})`
+                );
+              }
+
+              return;
+            }
+
+            if (completionDateField.data_type !== "date") {
+              core.setFailed(
+                `"${completionDateField.name}" exists, but it is ` +
+                `a "${completionDateField.data_type}" field rather ` +
+                "than a date field."
+              );
+              return;
+            }
+
+            core.info(
+              `Completion Date Issue Field ID: ` +
+              `${completionDateField.id}`
+            );
+
+            /*
+             * Read the issue's current Issue Field values.
+             */
+            const currentValuesResponse = await github.request(
+              "GET /repos/{owner}/{repo}/issues/{issue_number}" +
+              "/issue-field-values",
+              {
+                owner: repositoryOwner,
+                repo: repositoryName,
+                issue_number: issue.number,
+                per_page: 100,
+                headers: API_HEADERS,
+              }
+            );
+
+            const currentValues = currentValuesResponse.data;
+
+            const currentCompletionDateValue =
+              currentValues.find(
+                value =>
+                  value.issue_field_id ===
+                  completionDateField.id
+              );
+
+            const existingCompletionDate =
+              currentCompletionDateValue?.value ?? null;
+
+            /*
+             * POST adds or updates the specified Issue Field without
+             * replacing the issue's other Issue Field values.
+             */
+            async function setCompletionDate(date) {
+              await github.request(
+                "POST /repos/{owner}/{repo}/issues/{issue_number}" +
+                "/issue-field-values",
+                {
+                  owner: repositoryOwner,
+                  repo: repositoryName,
+                  issue_number: issue.number,
+                  issue_field_values: [
+                    {
+                      field_id: completionDateField.id,
+                      value: date,
+                    },
+                  ],
+                  headers: API_HEADERS,
+                }
+              );
+            }
+
+            /*
+             * DELETE removes only the Completion Date value.
+             */
+            async function clearCompletionDate() {
+              try {
+                await github.request(
+                  "DELETE /repos/{owner}/{repo}/issues/{issue_number}" +
+                  "/issue-field-values/{issue_field_id}",
+                  {
+                    owner: repositoryOwner,
+                    repo: repositoryName,
+                    issue_number: issue.number,
+                    issue_field_id: completionDateField.id,
+                    headers: API_HEADERS,
+                  }
+                );
+              } catch (error) {
+                /*
+                 * GitHub returns 404 when the field has no current value.
+                 * That is already the desired result.
+                 */
+                if (error.status !== 404) {
+                  throw error;
+                }
+
+                core.info(
+                  "Completion Date was already empty."
+                );
+              }
+            }
+
+            const issueReference =
+              `${repositoryOwner}/${repositoryName}` +
+              `#${issue.number}`;
+
+            /*
+             * Reopened issues should no longer have a Completion Date.
+             */
+            if (issue.state === "OPEN") {
+              if (existingCompletionDate) {
+                await clearCompletionDate();
+
+                core.notice(
+                  `Cleared Completion Date for reopened issue ` +
+                  `${issueReference}: ${issue.title}`
+                );
+
+                await core.summary
+                  .addHeading("Completion Date Synchronization")
+                  .addTable([
+                    [
+                      { data: "Issue", header: true },
+                      { data: "Previous date", header: true },
+                      { data: "Result", header: true },
+                    ],
+                    [
+                      issueReference,
+                      existingCompletionDate,
+                      "Completion Date cleared",
+                    ],
+                  ])
+                  .write();
+              } else {
+                core.info(
+                  `${issueReference} is open and already has no ` +
+                  "Completion Date."
+                );
+
+                await core.summary
+                  .addHeading("Completion Date Synchronization")
+                  .addTable([
+                    [
+                      { data: "Issue", header: true },
+                      { data: "Result", header: true },
+                    ],
+                    [
+                      issueReference,
+                      "Completion Date already empty",
+                    ],
+                  ])
+                  .write();
+              }
+
+              return;
+            }
+
+            /*
+             * closedAt contains the issue's latest closure timestamp.
+             *
+             * POST intentionally sets the value again when the issue is
+             * closed. Therefore, reopening and closing it later replaces
+             * the previous Completion Date with the newest closure date.
+             */
+            if (issue.state === "CLOSED" && issue.closedAt) {
+              const completionDate =
+                formatTeamDate(issue.closedAt);
+
+              if (existingCompletionDate === completionDate) {
+                core.info(
+                  `${issueReference} already has Completion Date ` +
+                  `${completionDate}.`
+                );
+
+                await core.summary
+                  .addHeading("Completion Date Synchronization")
+                  .addTable([
+                    [
+                      { data: "Issue", header: true },
+                      { data: "Completion Date", header: true },
+                      { data: "Result", header: true },
+                    ],
+                    [
+                      issueReference,
+                      completionDate,
+                      "No change needed",
+                    ],
+                  ])
+                  .write();
+
+                return;
+              }
+
+              await setCompletionDate(completionDate);
+
+              const result = existingCompletionDate
+                ? `Updated from ${existingCompletionDate}`
+                : "Completion Date populated";
+
+              core.notice(
+                `Set Completion Date to ${completionDate} for ` +
+                `${issueReference}: ${issue.title}`
+              );
+
+              await core.summary
+                .addHeading("Completion Date Synchronization")
+                .addTable([
+                  [
+                    { data: "Issue", header: true },
+                    { data: "Completion Date", header: true },
+                    { data: "Result", header: true },
+                  ],
+                  [
+                    issueReference,
+                    completionDate,
+                    result,
+                  ],
+                ])
+                .write();
+
+              return;
+            }
+
+            core.warning(
+              `${issueReference} did not have a supported issue state ` +
+              "or closure timestamp."
+            );
