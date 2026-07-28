@@ -36,34 +36,203 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v6
 
-      - name: Reject spaces in file and folder names
+      - name: Validate file and folder names
         shell: bash
         run: |
-          invalid_paths="$(find . -not -path './.git/*' -print | grep ' ' || true)"
+          set -euo pipefail
 
-          if [ -n "$invalid_paths" ]; then
-            echo "::error::Spaces were found in file or folder names:"
-            echo "$invalid_paths"
+          # Master list of exact paths exempt from naming validation.
+          #
+          # Directory contents are NOT automatically exempt.
+          #
+          # For example, adding "MATLAB" exempts the folder name itself,
+          # but files and subfolders inside MATLAB must still follow the rules.
+          #
+          # Paths must be relative to the repository root and must not begin
+          # with "./".
+          NAMING_EXCEPTIONS=(
+            "README.md"
+            "MATLAB"
+            "ANSYS"
+            "
+          )
+
+          GLOBAL_FILE_EXCEPTIONS=(
+            ".gitkeep"
+            ".git"
+            ".github"
+            ".vscode"
+            ".gitignore"
+            ".gitattributes"
+            ".gitmodules"
+            ".editorconfig"
+            ".markdownlint-cli2.jsonc"
+          )
+
+          is_exception() {
+            local path="$1"
+            local name="${path##*/}"
+
+            local exception
+
+            # Exact path exceptions
+            for exception in "${NAMING_EXCEPTIONS[@]}"; do
+              [[ "$path" == "$exception" ]] && return 0
+            done
+
+            # Filename exceptions anywhere in the repository
+            for exception in "${GLOBAL_FILE_EXCEPTIONS[@]}"; do
+              [[ "$name" == "$exception" ]] && return 0
+            done
+
+            return 1
+          }
+
+          has_invalid_characters() {
+            local path="$1"
+
+            # Permitted characters:
+            # - letters
+            # - numbers
+            # - underscores
+            # - periods
+            # - forward slashes separating path components
+            [[ "$path" =~ [^A-Za-z0-9_./] ]]
+          }
+
+          is_all_caps() {
+            local name="$1"
+            local stem="$name"
+
+            # Remove only the final file extension.
+            if [[ "$stem" == *.* ]]; then
+              stem="${stem%.*}"
+            fi
+
+            # Reject a name only when its entire stem contains uppercase
+            # letters and no lowercase letters.
+            #
+            # Valid:
+            #   XMLParser.md
+            #   engineAPI.md
+            #   HPCReport.md
+            #
+            # Invalid:
+            #   XML.md
+            #   REPORT.md
+            #   HPC_REPORT.md
+            [[ "$stem" =~ [A-Z] ]] && [[ ! "$stem" =~ [a-z] ]]
+          }
+
+          invalid_characters=()
+          invalid_folders=()
+          invalid_files=()
+          all_caps_names=()
+
+          while IFS= read -r raw_path; do
+            path="${raw_path#./}"
+
+            [[ -z "$path" ]] && continue
+
+            # Skip validation only for this exact path.
+            if is_exception "$path"; then
+              continue
+            fi
+
+            name="${path##*/}"
+
+            if has_invalid_characters "$path"; then
+              invalid_characters+=("$path")
+              continue
+            fi
+
+            if [[ -d "$raw_path" ]]; then
+              # Folder names must use PascalCase.
+              if [[ ! "$name" =~ ^[A-Z][A-Za-z0-9]*$ ]]; then
+                invalid_folders+=("$path")
+              fi
+
+              if is_all_caps "$name"; then
+                all_caps_names+=("$path")
+              fi
+
+            elif [[ -f "$raw_path" ]]; then
+              if [[ "$name" == *.* ]]; then
+                stem="${name%.*}"
+                extension="${name##*.}"
+
+                # File-name sections must:
+                # - begin with a lowercase letter;
+                # - contain only letters and numbers;
+                # - be separated by underscores.
+                #
+                # Sequential capital letters are allowed after the first
+                # lowercase letter in each section.
+                #
+                # Valid:
+                #   engineAPI_report.md
+                #   xmlParser_APIResponse.md
+                #   hpc_firstStagePerformance.docx
+                #
+                # Invalid:
+                #   EngineAPI_report.md
+                #   engineAPI_APIResponse.md
+                #   performance-report.md
+                if [[ ! "$stem" =~ ^[a-z][A-Za-z0-9]*(_[a-z][A-Za-z0-9]*)*$ ]] ||
+                   [[ ! "$extension" =~ ^[a-z0-9]+$ ]]; then
+                  invalid_files+=("$path")
+                fi
+              fi
+
+              if is_all_caps "$name"; then
+                all_caps_names+=("$path")
+              fi
+            fi
+          done < <(
+            find . \
+              -not -path './.git' \
+              -not -path './.git/*' \
+              -print
+          )
+
+          failed=0
+
+          if ((${#invalid_characters[@]} > 0)); then
+            echo "::error::Paths contain prohibited characters."
+            printf '  %s\n' "${invalid_characters[@]}"
+            echo
+            failed=1
+          fi
+
+          if ((${#invalid_folders[@]} > 0)); then
+            echo "::error::Folder names must use PascalCase."
+            printf '  %s\n' "${invalid_folders[@]}"
+            echo
+            failed=1
+          fi
+
+          if ((${#invalid_files[@]} > 0)); then
+            echo "::error::File names must use camelCase sections separated by underscores and a lowercase extension."
+            printf '  %s\n' "${invalid_files[@]}"
+            echo
+            failed=1
+          fi
+
+          if ((${#all_caps_names[@]} > 0)); then
+            echo "::error::Names must not be entirely uppercase."
+            printf '  %s\n' "${all_caps_names[@]}"
+            echo
+            failed=1
+          fi
+
+          if ((failed)); then
+            echo
+            echo "Exact naming exceptions:"
+            printf '  %s\n' "${NAMING_EXCEPTIONS[@]}"
             exit 1
           fi
 
-          echo "No spaces found in paths."
-
-      - name: Reject selected special characters
-        shell: bash
-        run: |
-          invalid_paths="$(
-            find . -not -path './.git/*' -print |
-              grep -E '[@#$%&*()]' || true
-          )"
-
-          if [ -n "$invalid_paths" ]; then
-            echo "::error::Special characters were found in paths:"
-            echo "$invalid_paths"
-            exit 1
-          fi
-
-          echo "No prohibited special characters found."
+          echo "All non-exempt paths follow the naming conventions."
 
   large-files:
     name: Large file checks
