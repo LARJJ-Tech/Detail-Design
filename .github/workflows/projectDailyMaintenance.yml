@@ -623,7 +623,7 @@ jobs:
                 /*
                  * Target Date is read from the organization Issue Field.
                  *
-                 * The issue becomes overdue the day after its Target Date.
+                 * The issue becomes overdue the day on or after its Target Date. (Cron at EOD so overdue wouldnt be visible on the first overdue day)
                  */
                 const hasOverdueLabel =
                   content.labels.nodes.some(
@@ -637,7 +637,7 @@ jobs:
                 const shouldBeOverdue =
                   isOpenIssue &&
                   Boolean(targetDate) &&
-                  targetDate < today;
+                  targetDate <= today;
 
                 if (shouldBeOverdue && !hasOverdueLabel) {
                   try {
