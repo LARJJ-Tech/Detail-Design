@@ -54,7 +54,7 @@ All trademarks, copyrights, and software licenses remain the property of their r
 
 This repository is intended to document an academic engineering project for educational and portfolio purposes.
 
-The authors make no representations or warranties regarding the accuracy, completeness, or fitness of the information contained herein. Users assume all responsibility for any use of the materials provided. 
+The authors make no representations or warranties regarding the accuracy, completeness, or fitness of the information contained herein. Users assume all responsibility for any use of the materials provided.
 
 ## Acknowledgments
 
