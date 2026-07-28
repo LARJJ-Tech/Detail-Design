@@ -54,6 +54,7 @@ jobs:
             "README.md"
             "MATLAB"
             "ANSYS"
+            ".github/workflows"
           )
 
           GLOBAL_FILE_EXCEPTIONS=(
@@ -66,6 +67,7 @@ jobs:
             ".gitmodules"
             ".editorconfig"
             ".markdownlint-cli2.jsonc"
+            ".placeholder"
           )
 
           is_exception() {
