@@ -54,14 +54,11 @@ jobs:
             "README.md"
             "MATLAB"
             "ANSYS"
-            ".github/workflows"
           )
 
           GLOBAL_FILE_EXCEPTIONS=(
             ".gitkeep"
             ".git"
-            ".github"
-            ".github/"
             ".vscode"
             ".gitignore"
             ".gitattributes"
@@ -69,13 +66,16 @@ jobs:
             ".editorconfig"
             ".markdownlint-cli2.jsonc"
             ".placeholder"
-            "Detail-Design.wiki"
+          )
+
+          PATH_PREFIX_EXCEPTIONS=(
+            ".github"
+            "Documents/Wiki/Detail-Design.wiki"
           )
 
           is_exception() {
             local path="$1"
             local name="${path##*/}"
-
             local exception
 
             # Exact path exceptions
@@ -83,7 +83,12 @@ jobs:
               [[ "$path" == "$exception" ]] && return 0
             done
 
-            # Filename exceptions anywhere in the repository
+            # Ignore everything beneath these directories
+            for exception in "${PATH_PREFIX_EXCEPTIONS[@]}"; do
+              [[ "$path" == "$exception" || "$path" == "$exception/"* ]] && return 0
+            done
+
+            # Filename exceptions anywhere
             for exception in "${GLOBAL_FILE_EXCEPTIONS[@]}"; do
               [[ "$name" == "$exception" ]] && return 0
             done
