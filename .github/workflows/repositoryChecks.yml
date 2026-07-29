@@ -61,6 +61,7 @@ jobs:
             ".gitkeep"
             ".git"
             ".github"
+            ".github/"
             ".vscode"
             ".gitignore"
             ".gitattributes"
