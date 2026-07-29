@@ -27,6 +27,7 @@ jobs:
           globs: |
             **/*.md
             !Data/LocalData/**
+            !.github/
 
   filenames:
     name: Filename checks
