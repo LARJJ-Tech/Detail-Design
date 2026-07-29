@@ -1,3 +1,12 @@
+---
+name: New PR
+about: Simple format for describing a PR
+title: ''
+labels: ''
+assignees: ''
+
+---
+
 ## Summary
 Briefly describe the changes made in this pull request.
 
