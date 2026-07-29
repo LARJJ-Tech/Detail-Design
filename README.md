@@ -9,7 +9,9 @@
                                                                                                      
 ```
 
-![Repository Checks](https://github.com/LARJJ-Tech/Detail-Design/actions/workflows/repositoryChecks.yml/badge.svg) ![Project Daily Mx](https://github.com/LARJJ-Tech/Detail-Design/actions/workflows/projectDailyMaintenance.yml/badge.svg)
+![Repository Checks](https://github.com/LARJJ-Tech/Detail-Design/actions/workflows/repositoryChecks.yml/badge.svg) 
+![Project Daily Mx](https://github.com/LARJJ-Tech/Detail-Design/actions/workflows/projectDailyMaintenance.yml/badge.svg)
+![License](https://img.shields.io/badge/License-Private-red)
 
 # NOTICE
 
