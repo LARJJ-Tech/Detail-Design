@@ -9,6 +9,8 @@
                                                                                                      
 ```
 
+![Repository Checks](https://github.com/LARJJ-Tech/Detail-Design/actions/workflows/repositoryChecks.yml/badge.svg) ![Project Daily Mx](https://github.com/LARJJ-Tech/Detail-Design/actions/workflows/projectDailyMaintenance.yml/badge.svg)
+
 # NOTICE
 
 **Course:** AERO 440 - Jet Propulsion Detail Design<br>
