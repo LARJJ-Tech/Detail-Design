@@ -2,7 +2,7 @@ name: Daily Project Maintenance
 
 on:
   schedule:
-    - cron: "42 23 * * *"
+    - cron: "0 0 * * *"
       timezone: "America/New_York"
 
   workflow_dispatch:
@@ -69,9 +69,14 @@ jobs:
                 expected.trim().toLowerCase();
             }
 
-            const today = formatTeamDate(new Date());
+            // Use yesterday's date so a delayed midnight run still processes
+            // the intended day.
+            const processingDate = new Date();
+            processingDate.setDate(processingDate.getDate() - 1);
 
-            core.info(`Team date: ${today}`);
+            const effectiveDate = formatTeamDate(processingDate);
+
+            core.info(`Processing date: ${effectiveDate}`);
 
             /*
              * Retrieve the organization-level Issue Field definitions.
@@ -538,11 +543,11 @@ jobs:
                     repository,
                     issueNumber,
                     startDateField.id,
-                    today
+                    effectiveDate
                   );
 
                   core.info(
-                    `Set Start Date to ${today} for ` +
+                    `Set Start Date to ${effectiveDate} for ` +
                     `${issueReference}: ${title}`
                   );
 
@@ -623,7 +628,7 @@ jobs:
                 /*
                  * Target Date is read from the organization Issue Field.
                  *
-                 * The issue becomes overdue the day on or after its Target Date. (Cron at EOD so overdue wouldnt be visible on the first overdue day)
+                 * The issue becomes overdue the day on or after its Target Date. (Cron at EOD so overdue wouldn't be visible on the first overdue day)
                  */
                 const hasOverdueLabel =
                   content.labels.nodes.some(
@@ -637,7 +642,7 @@ jobs:
                 const shouldBeOverdue =
                   isOpenIssue &&
                   Boolean(targetDate) &&
-                  targetDate <= today;
+                  targetDate <= effectiveDate;
 
                 if (shouldBeOverdue && !hasOverdueLabel) {
                   try {
