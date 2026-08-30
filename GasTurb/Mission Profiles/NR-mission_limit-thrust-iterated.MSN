@@ -1,0 +1,79 @@
+#  Engine Type  5: Mission Input Data
+77|18|
+||Point 1|Point 2|Point 3|Point 4|Point 5|Point 6|Point 7|Point 8|Point 9|Point 10|Point 11|Point 12|Point 13|Point 14|Point 15|Point 16|
+Show Result||yes|yes|yes|yes|yes|yes|yes|yes|yes|yes|yes|yes|yes|yes|yes|yes|
+Description||DP, Cruise|Serv Ceil|ABS Ceil|Maneuv|TO|SLS|Climb1|Climb2|Climb3|Climb4|Climb5|Descend5|Descent4|Descent3|Descend2|Descend1|
+Altitude                       |m|11582.4|13093.1|13757.8|3048|914.4|0|914.4|3733.8|6553.2|9372.6|12192|12192|9372.6|6553.2|3733.8|914.4|
+Delta T from ISA               |K|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|
+Relative Humidity [%]          ||0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|
+Mach Number                    ||0.65|0.8|0.9|0.6|0.2|0|0.55|0.55|0.55|0.55|0.55|0.6|0.6|0.6|0.6|0.6|
+Intake Pressure Ratio          ||0.98|0.98|0.98|0.98|0.98|0.98|0.98|0.98|0.98|0.98|0.98|0.98|0.98|0.98|0.98|0.98|
+No (0) or Average (1) Core dP/P||1|1|1|1|1|1|1|1|1|1|1|1|1|1|1|1|
+Fuel Heating Value             |MJ/kg|43.15|43.15|43.15|43.15|43.15|43.15|43.15|43.15|43.15|43.15|43.15|43.15|43.15|43.15|43.15|43.15|
+Overboard Bleed                |kg/s|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|
+Rel. Overboard Bleed W_Bld/W25 ||0.01|0.01|0.01|0.01|0.01|0.01|0.01|0.01|0.01|0.01|0.01|0.01|0.01|0.01|0.01|0.01|
+Recirculating Bleed W_reci/W25 ||0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|
+Power Offtake                  |kW|110|110|110|110|110|110|110|110|110|110|110|110|110|110|110|110|
+XN/T4/Windmill/Crank (1/2/3/4) ||1|1|1|1|1|1|1|1|1|1|1|1|1|1|1|1|
+HPC Spool Speed ZXNH           ||0.975692|1.04866|1.06474|1.04847|1.0422|1|1.04036|1.0414|1.05338|1.08402|1.07526|0.848636|0.832833|0.840691|0.867703|0.908437|
+Burner Temperature ZT4         |IterVariable|1557.48|1752.97|1804.48|1670.24|1649.82|1561.82|1658.28|1651.41|1680.67|1777.47|1805.07|1439.39|1328.07|1296.49|1320.12|1391.32|
+Betavalue in HPC Map           |IterVariable|0.501243|0.509715|0.510182|0.454168|0.4534|0.455751|0.451651|0.457254|0.472275|0.504296|0.527417|0.597775|0.553027|0.517016|0.488783|0.467348|
+Betavalue in HPC Dist. Sector  ||0.5|0.5|0.5|0.5|0.5|0.5|0.5|0.5|0.5|0.5|0.5|0.5|0.5|0.5|0.5|0.5|
+LPC Spool Speed ZXNL           |IterVariable|0.960773|1.07404|1.09092|0.969926|0.963164|0.891019|0.939845|0.970722|1.03024|1.11649|1.13838|0.788081|0.724611|0.698094|0.707666|0.741553|
+Betavalue in LPC Map           |IterVariable|0.493136|0.522282|0.526179|0.470641|0.469127|0.461251|0.466989|0.471389|0.480688|0.526774|0.554757|0.525142|0.460907|0.412237|0.392329|0.391608|
+Betavalue in Booster Map       |IterVariable|0.4|0.4|0.4|0.4|0.4|0.4|0.4|0.4|0.4|0.4|0.4|0.4|0.4|0.4|0.4|0.4|
+Estimated Bypass Ratio         |IterVariable|1.47547|1.36364|1.35993|1.529|1.53128|1.65839|1.59852|1.51336|1.41119|1.3008|1.2785|1.86181|2.01857|2.13605|2.14163|2.08175|
+Betavalue in HPT Map           |IterVariable|0.50254|0.496548|0.495484|0.504009|0.504641|0.507802|0.504869|0.503716|0.500146|0.496171|0.494669|0.520195|0.517061|0.513226|0.511547|0.510912|
+Betavalue in LPT Map           |IterVariable|0.488692|0.523971|0.523481|0.453575|0.453174|0.428558|0.437197|0.459224|0.49002|0.549787|0.57068|0.455653|0.436017|0.416196|0.399904|0.391143|
+Betavalue in LPC Dist. Sector  ||0.5|0.5|0.5|0.5|0.5|0.5|0.5|0.5|0.5|0.5|0.5|0.5|0.5|0.5|0.5|0.5|
+Estim.Bypass Ratio Dist.Sect.  ||1.41961|1.41961|1.41961|1.41961|1.41961|1.41961|1.41961|1.41961|1.41961|1.41961|1.41961|1.41961|1.41961|1.41961|1.41961|1.41961|
+Betavalue in IPC Dist. Sector  ||0.4|0.4|0.4|0.4|0.4|0.4|0.4|0.4|0.4|0.4|0.4|0.4|0.4|0.4|0.4|0.4|
+delta T Recirculating Bleed    |IterVariable|-8.06009E-09|-5.93008E-07|-1.33064E-06|-4.66384E-06|-4.57415E-06|-4.67044E-06|4.0673E-06|-4.32858E-06|-2.34127E-06|-3.23182E-07|-0.000545539|-0.000946672|-5.23636E-07|-2.68046E-06|-4.5055E-06|-1.69878E-05|
+Pressure Distortion Index      ||0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|
+Temperature Distortion Index   ||0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|
+Sector Angle of Distortion     ||60|60|60|60|60|60|60|60|60|60|60|60|60|60|60|60|
+Coupling Factor                ||0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|
+Delta LPC Capacity [%]         ||0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|
+Delta outer LPC Eff  [%]       ||0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|
+Delta inner LPC Eff  [%]       ||0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|
+Delta Booster Capacity [%]     ||0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|
+Delta Booster Eff    [%]       ||0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|
+Delta HPC Capacity [%]         ||0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|
+Delta HPC Efficiency [%]       ||0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|
+Compressor Delta VG Setting[deg||0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|
+Delta HPT Capacity   [%]       ||0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|
+Delta HPT Efficiency [%]       ||0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|
+d_HPT Efficiency / d_XN_HP     ||0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|
+Delta LPT Capacity   [%]       ||0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|
+Delta LPT Efficiency [%]       ||0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|
+d_LPT Efficiency / d_XN_LP     ||0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|
+Delta Bypass Mixer Area [%]    ||0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|
+Delta Core Mixer Area [%]      ||0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|
+Delta Nozzle Area    [%]       ||0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|
+Delta Comp Interduct P/P [%]   ||0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|
+Delta Burner P/P [%]           ||0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|
+Delta Turb Interduct P/P [%]   ||0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|
+Delta Turbine Exit P/P [%]     ||0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|
+Delta Bypass P/P [%]           ||0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|
+MAX  Low Press Spool Speed NL [%]|Max Limiter|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|
+MAX  Corr Low Spool Speed NLR [%]|Max Limiter|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|
+MAX  High Press Spool Speed NH [%]|Max Limiter|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|
+MAX  Corr High Spool Speed NHR [%]|Max Limiter|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|
+MAX  Comp Exit Temperature T3 [K]|Max Limiter|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|
+MAX  Compr Exit Pressure P3 [kPa]|Max Limiter|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|
+MAX  HPT Rotor Inlet Temp T41 [K]|Max Limiter|1750|1750|1750|1750|1750|Off|1750|1750|1750|1750|1750|1750|1750|1750|1750|1750|
+MAX  LPT Inlet Temp T45 [K]|Max Limiter|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|
+MAX  Turb Exit Temperature T5 [K]|Max Limiter|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|
+MAX  Fuel Flow [kg/s]|Max Limiter|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|
+MAX  Net Thrust [kN]|Max Limiter|5.612776084|5.690527305|5.690527305|14.79892413|18.58627774|Off|16.25919576|13.81740618|11.63177667|9.37556066|6.80078802|3.025874684|3.325945497|3.897540287|5.227587945|7.733801447|
+MAX  Engine Pressure Ratio EPR|Max Limiter|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|
+||||||||||||||||||
+||||||||||||||||||
+||||||||||||||||||
+MIN  High Press Spool Speed NH [%]|Min Limiter|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|
+MIN  Fuel Flow [kg/s]|Min Limiter|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|
+MIN  Corr HP Spool Speed NHR [%]|Min Limiter|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|
+MIN  Compr Exit Pressure P3|Min Limiter|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|Off|
+||||||||||||||||||
+||||||||||||||||||
+||||||||||||||||||
