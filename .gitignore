@@ -1,3 +1,4 @@
 # Local generated or temporary data
 Data/LocalData/*
 !Data/LocalData/.gitkeep
+.DS_Store
