@@ -649,53 +649,53 @@ TargetValue=0
 GreaterThan=0
 
 [TOInput]
-Line 1=Power Lever Angle, ° =55
-Line 2=Flat Rating Temp, ISA + °C=15
+Line 1=Power Lever Angle, Â° =55
+Line 2=Flat Rating Temp, ISA + Â°C=15
 Line 3=Min Altitude, ft =-2000
 Line 4=Max Altitude, ft=15000
 Line 5=Max Mach No=0.4
-Line 6=T41 - Altitude Gradient °C/1000 ft=1
+Line 6=T41 - Altitude Gradient Â°C/1000 ft=1
 GridRowCount=1
 
 [MCoInput]
-Line 1=Power Lever Angle, °=50
-Line 2=Flat Rating Temp, ISA + °C=10
+Line 1=Power Lever Angle, Â°=50
+Line 2=Flat Rating Temp, ISA + Â°C=10
 Line 3=Min Altitude, ft =-2000
 Line 4=Max Altitude, ft=25000
 Line 5=Min Mach No=0
 Line 6=Max Mach No=0.85
-Line 7=SL Delta T41 Max Continuos, °C=30
-Line 8=T41 - Altitude Gradient °C/1000 ft=1
+Line 7=SL Delta T41 Max Continuos, Â°C=30
+Line 8=T41 - Altitude Gradient Â°C/1000 ft=1
 GridRowCount=1
 
 [MClInput]
-Line 1=Power Lever Angle, °=45
-Line 2=Flat Rating Temp, ISA + °C=10
+Line 1=Power Lever Angle, Â°=45
+Line 2=Flat Rating Temp, ISA + Â°C=10
 Line 3=Min Altitude, ft =-2000
 Line 4=Max Altitude, ft=40000
 Line 5=Min Mach No=0.3
 Line 6=Max Mach No=0.85
-Line 7=SL Delta T41 Max Climb, °C=50
-Line 8=T41 - Altitude Gradient °C/1000 ft=1
+Line 7=SL Delta T41 Max Climb, Â°C=50
+Line 8=T41 - Altitude Gradient Â°C/1000 ft=1
 Line 9=Altitude of Peak T41, ft=25000
-Line 10=High Altitude Delta T41 Max Climb, °C=60
+Line 10=High Altitude Delta T41 Max Climb, Â°C=60
 GridRowCount=1
 
 [MCrInput]
-Line 1=Power Lever Angle, °=40
-Line 2=Flat Rating Temp, ISA + °C=10
+Line 1=Power Lever Angle, Â°=40
+Line 2=Flat Rating Temp, ISA + Â°C=10
 Line 3=Min Altitude, ft=-2000
 Line 4=Max Altitude, ft=40000
 Line 5=Min Mach No=0.3
 Line 6=Max Mach No=0.85
-Line 7=SL Delta T41 Max Cruise, °C=90
-Line 8=T41 - Altitude Gradient °C/1000 ft=1
+Line 7=SL Delta T41 Max Cruise, Â°C=90
+Line 8=T41 - Altitude Gradient Â°C/1000 ft=1
 Line 9=Altitude of Peak T41, ft=25000
-Line 10=High Altitude Delta T41 Max Cruise, °C=80
+Line 10=High Altitude Delta T41 Max Cruise, Â°C=80
 GridRowCount=1
 
 [IdleInput]
-Line 1=Power Lever Angle, °=10
+Line 1=Power Lever Angle, Â°=10
 Line 2=Min Altitude, ft =-2000
 Line 3=Max Altitude, ft=36000
 Line 4=Min Mach No=0
