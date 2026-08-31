@@ -2,3 +2,4 @@
 Data/LocalData/*
 !Data/LocalData/.gitkeep
 .DS_Store
+Last_[0-3]_???.???
