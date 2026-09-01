@@ -1,8 +1,8 @@
 clc;clear;close all
 
 %% Input
-data = readmatrix("off Design/Data5.xlsx",'Range','C1:R176');
-cond = [6 5 11 1];
+data = readmatrix("..\Data\GasTurb\constraintPerformanceData.xlsx",'Range','C1:R176');
+cond = [1:6];
 
 %% Calc
 nfac = [1 1 1 1 1 1 1 100];
