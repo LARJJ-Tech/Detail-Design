@@ -5,15 +5,16 @@ data = readmatrix("..\Data\GasTurb\constraintPerformanceData.xlsx",'Range','C1:R
 cond = [1:6];
 
 %% Calc
+[Tamb,a,Pamb] = atmosisa(data(4,:));
 nfac = [1 1 1 1 1 1 1 100];
-FP = (data(96,:).*data(72,:))+(data(95,:).*data(74,:));
-CP = data(97,:).*data(78,:);
-FAR = data(18,:)./data(78,:);
+FP = (data(96,:).*data(72,:))+(data(95,:).*data(74,:)); % FP = (Inner LPC Specific Work × Core Inlet Flow W21) + (Outer LPC Specific Work × Bypass Inlet Flow W12)
+CP = data(97,:).*data(78,:); % CP = HPC Specific Work × HPC Exit Flow W3
+FAR = data(18,:)./data(78,:); % FAR = Total Fuel Flow / HPC Exit Flow W3
 
 %% Tables
 
 %Engine Cycle Perf
-t1 = [data([7 53 19 141 147 10],cond);data(10,cond).*224.8089431; data(13,cond); data(13,cond).*196.85; data(12,cond); data(12,cond).*3600./(453.592.*224.8089431); FAR(1,cond)].';
+t1 = [Pamb(cond)/1000;Tamb(cond);data([7 53 19 141 147 10],cond);data(10,cond).*224.8089431; data(13,cond); data(13,cond).*196.85; data(12,cond); data(12,cond).*3600./(453.592.*224.8089431); FAR(1,cond)].';
 
 %LPC
 t2 = [data([39 38 70 71 141],cond); FP(1,cond); data([23 139],cond)].'.*nfac;
