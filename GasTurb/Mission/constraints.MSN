@@ -3,7 +3,7 @@
 ||Point 1|Point 2|Point 3|Point 4|Point 5|Point 6|
 Show Result||yes|yes|yes|yes|yes|yes|
 Description||CRUISE|TOC|MANUEVER|CEILING|TOLDG|SLS|
-Altitude                       |m|11582|11582|3657.6|12802.0|0|0|
+Altitude                       |m|11582|11582|3048|12802.0|0|0|
 Delta T from ISA               |K|0|0|0|0|7.5|0|
 Relative Humidity [%]          ||0|0|0|0|0|0|
 Mach Number                    ||0.63|0.63|0.7|0.8|0.2|0|
@@ -65,7 +65,7 @@ MAX  HPT Rotor Inlet Temp T41 [K]|Max Limiter|1850|1850|1850|1850|1850|1850|
 MAX  LPT Inlet Temp T45 [K]|Max Limiter|Off|Off|Off|Off|Off|Off|
 MAX  Turb Exit Temperature T5 [K]|Max Limiter|Off|Off|Off|Off|Off|Off|
 MAX  Fuel Flow [kg/s]|Max Limiter|Off|Off|Off|Off|Off|Off|
-MAX  Net Thrust [kN]|Max Limiter|7.3288|7.8950|17.4681|6.3104|24.115|28.2031|
+MAX  Net Thrust [kN]|Max Limiter|7.3288|7.8950|15.76|6.3104|24.115|28.2031|
 MAX  Engine Pressure Ratio EPR|Max Limiter|Off|Off|Off|Off|Off|Off|
 ||||||||
 ||||||||

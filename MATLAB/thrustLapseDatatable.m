@@ -1,4 +1,4 @@
-function alpha = Fig_alpha(alt_ft, M)
+function alpha = thrustLapseDatatable(alt_ft, M)
 % alpha - Cycle specific thrust lapse for engine design
 % Values calculated per GasTurb with maximum TET of 1850
 

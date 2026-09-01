@@ -23,7 +23,7 @@ n   = [1.00 3.00 1.00];
 M      = [0.63 0.7 0.8];
 dz_dt  = [0.0 0.0 0.51];
 W      = [];
-alt_ft = [38000 12000 42000];
+alt_ft = [38000 10000 42000];
 alt_m  = alt_ft * 0.3048;
 
 % Atmosphere
@@ -36,7 +36,7 @@ gamma = 1.4;
 % Flight Conditions
 V  = M  .* a;
 q  = 0.5 .* rho .* V.^2;
-alpha_T = Fig_alpha(alt_ft,M);
+alpha_T = thrustLapseDatatable(alt_ft,M);
 
 Tt_Ts   = (1 + (gamma-1)/2 .* M.^2);
 Pt_ps   = (1 + (gamma-1)/2 .* M.^2) .^ (gamma/(gamma-1));
@@ -102,19 +102,26 @@ text(52,0.37,1,'[51.5, 0.4]','EdgeColor','black','BackgroundColor','white','Font
 grid on; grid minor; hold off; 
 
 %% Design Point Required Thrust
+alt_ft = [38000 38000 10000 42000 0 0];
+M = [0.63 0.63 0.7 0.8 0.2 0];
 
-Wto = 66636;
+Wto = 64934;
 TW_need = TW(WL_lb == WL_dp,:);
-T_un = TW_need*Wto;
+TW_need = [TW_need(1) 0.4 TW_need(2:end) 0.4];
+thrustLapse = thrustLapseDatatable(alt_ft,M);
 
-[~,TR,PR] = flowisentropic(gamma,0.65,'mach');
-P1 = Pt * (PR)^-1;
-T1 = Tt * (TR)^-1;
-V1 = 0.65*sqrt(gamma.*287.05.*T1);
-% D_add = W.*(V1 - V) + (P1 - P)*A;
+T_in = 1.05e-3 * Wto * TW_need .* thrustLapse;
 
-% T_in = vpa(T_un*1.05e-3,4)
-T_peak = Wto*TW_dp*1.05e-3;
-T_in = [T_un(1)*1.05e-3 T_peak T_un(2:end)*1.05e-3]
+% T_un = TW_need*Wto;
+% 
+% [~,TR,PR] = flowisentropic(gamma,0.63,'mach');
+% P1 = Pt * (PR)^-1;
+% T1 = Tt * (TR)^-1;
+% V1 = 0.65*sqrt(gamma.*287.05.*T1);
+% % D_add = W.*(V1 - V) + (P1 - P)*A;
+% 
+% % T_in = vpa(T_un*1.05e-3,4)
+% T_peak = Wto*TW_dp*1.05e-3;
+% T_in = [T_un(1)*1.05e-3 T_peak T_un(2:end)*1.05e-3]
 
 %% Additive Drag
