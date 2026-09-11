@@ -2,13 +2,13 @@ clc;clear;close all
 
 %% Input
 data = dataImport("..\Data\GasTurb\constraintPerformanceData.xlsx");
-cond = "CRUISE";
+cond = 2:7;
 %% Calc
 function Tamb = Tamb(data, cond)
     Tamb = atmosisa(data{"Altitude",cond});
 end
 function Pamb = Pamb(data, cond)
-    [~,~,Pamb] = atmosisa(data{"Altitude",cond});
+    [~,a,Pamb] = atmosisa(data{"Altitude",cond});
 end
 function FP=FP(data, cond)
 FP = (data{"Inner LPC Spec. Work",cond}.*data{"Core Inlet Flow W21",cond})+(data{"Outer LPC Spec. Work",cond}.*data{"Bypass Inlet Flow W12",cond}); % FP = (Inner LPC Specific Work × Core Inlet Flow W21) + (Outer LPC Specific Work × Bypass Inlet Flow W12)
@@ -27,7 +27,7 @@ nfac = [1 1 1 1 1 1 1 100];
 %Engine Cycle Perf
 
 
-t1 = [Pamb(data,cond)/1000;Tamb(data,cond);data{["Mach Number" "HPT Stator Outlet Temp T405" "Overall Pressure Ratio P3/P2" "LPC Inner Pressure Ratio" "Bypass Ratio" "Net Thrust"],cond}; ...
+t1 = [Pamb(cond)/1000;Tamb(cond);data{["Mach Number" "HPT Stator Outlet Temp T405" "Overall Pressure Ratio P3/P2" "LPC Inner Pressure Ratio" "Bypass Ratio" "Net Thrust"],cond}; ...
     data{"Net Thrust",cond}.*224.8089431; data{"Specific Thrust",cond}; data{"Specific Thrust",cond}.*196.85; data{"Sp. Fuel Consumption",cond};...
     data{"Sp. Fuel Consumption",cond}.*3600./(453.592.*224.8089431); FAR(data,cond)].';
 
