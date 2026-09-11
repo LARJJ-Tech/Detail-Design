@@ -2,7 +2,7 @@ clc;clear;close all
 
 %% Input
 data = dataImport("..\Data\GasTurb\constraintPerformanceData.xlsx");
-cond = "CRUISE";
+cond = "2:7";
 %% Calc
 function Tamb = Tamb(data, cond)
     Tamb = atmosisa(data{"Altitude",cond});
