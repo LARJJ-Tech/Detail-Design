@@ -2,11 +2,11 @@
 77|11|
 ||Point 1|Point 2|Point 3|Point 4|Point 5|Point 6|Point 7|Point 8|Point 9|
 Show Result||yes|yes|yes|yes|yes|yes|yes|yes|yes|
-Description||CLIMB_0|CLIMB_1|CLIMB_2|CLIMB_3|CLIMB_4|CLIMB_5|CLIMB_6|CLIMB_7|CLIMB_8|
-Altitude                       |m|0|1524|3048|4572|6096|7620|9144|10668|10972.8|
+Description||CRUISE|DESCEND_1|DESCEND_2|DESCEND_3|DESCEND_4|DESCEND_5|DESCEND_6|DESCEND_7|DESCEND_8|
+Altitude                       |m|11582|10668|9144|7620|6096|4572|3048|1524|0|
 Delta T from ISA               |K|0|0|0|0|0|0|0|0|0|
 Relative Humidity [%]          ||0|0|0|0|0|0|0|0|0|
-Mach Number                    ||0.2|0.25|0.6|0.6|0.6|0.6|0.6|0.6|0.6|
+Mach Number                    ||0.63|0.6|0.6|0.6|0.6|0.6|0.650|0.250|0.2|
 Intake Pressure Ratio          ||-0.99|-0.99|-0.99|-0.99|-0.99|-0.99|-0.99|-0.99|-0.99|
 No (0) or Average (1) Core dP/P||1|1|1|1|1|1|1|1|1|
 Fuel Heating Value             |MJ/kg|43.15|43.15|43.15|43.15|43.15|43.15|43.15|43.15|43.15|
@@ -58,14 +58,14 @@ Delta Bypass P/P [%]           ||0|0|0|0|0|0|0|0|0|
 MAX  Low Press Spool Speed NL [%]|Max Limiter|Off|Off|Off|Off|Off|Off|Off|Off|Off|
 MAX  Corr Low Spool Speed NLR [%]|Max Limiter|Off|Off|Off|Off|Off|Off|Off|Off|Off|
 MAX  High Press Spool Speed NH [%]|Max Limiter|Off|Off|Off|Off|Off|Off|Off|Off|Off|
-MAX  Corr High Spool Speed NHR [%]|Max Limiter|70.5|70.5|79|79.5|81|81.5|82.5|85|85|
+MAX  Corr High Spool Speed NHR [%]|Max Limiter|Off|85|85|82.5|81.5|81|79.5|79|70.5|
 MAX  Comp Exit Temperature T3 [K]|Max Limiter|Off|Off|Off|Off|Off|Off|Off|Off|Off|
 MAX  Compr Exit Pressure P3 [kPa]|Max Limiter|Off|Off|Off|Off|Off|Off|Off|Off|Off|
-MAX  HPT Rotor Inlet Temp T41 [K]|Max Limiter|Off|Off|Off|Off|Off|Off|Off|Off|Off|
+MAX  HPT Rotor Inlet Temp T41 [K]|Max Limiter|1850|1850|1850|1850|1850|1850|1850|1850|1850|
 MAX  LPT Inlet Temp T45 [K]|Max Limiter|Off|Off|Off|Off|Off|Off|Off|Off|Off|
 MAX  Turb Exit Temperature T5 [K]|Max Limiter|Off|Off|Off|Off|Off|Off|Off|Off|Off|
 MAX  Fuel Flow [kg/s]|Max Limiter|Off|Off|Off|Off|Off|Off|Off|Off|Off|
-MAX  Net Thrust [kN]|Max Limiter|Off|Off|Off|Off|Off|Off|Off|Off|Off|
+MAX  Net Thrust [kN]|Max Limiter|6.11|0.93|1.33|1.88|2.66|3.70|5.22|4.25|6.49|
 MAX  Engine Pressure Ratio EPR|Max Limiter|Off|Off|Off|Off|Off|Off|Off|Off|Off|
 |||||||||||
 |||||||||||
