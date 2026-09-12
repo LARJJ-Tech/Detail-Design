@@ -65,7 +65,7 @@ MAX  HPT Rotor Inlet Temp T41 [K]|Max Limiter|1850|1850|1850|1850|1850|1850|
 MAX  LPT Inlet Temp T45 [K]|Max Limiter|Off|Off|Off|Off|Off|Off|
 MAX  Turb Exit Temperature T5 [K]|Max Limiter|Off|Off|Off|Off|Off|Off|
 MAX  Fuel Flow [kg/s]|Max Limiter|Off|Off|Off|Off|Off|Off|
-MAX  Net Thrust [kN]|Max Limiter|5.5001|5.9244|14.2885|4.9079|18.1819|22.3509|
+MAX  Net Thrust [kN]|Max Limiter|5.5003|5.9245|14.2885|4.9079|18.1823|22.3509|
 MAX  Engine Pressure Ratio EPR|Max Limiter|Off|Off|Off|Off|Off|Off|
 ||||||||
 ||||||||
