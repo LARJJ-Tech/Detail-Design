@@ -58,10 +58,10 @@ Delta Bypass P/P [%]           ||0|0|0|0|0|0|0|0|0|
 MAX  Low Press Spool Speed NL [%]|Max Limiter|Off|Off|Off|Off|Off|Off|Off|Off|Off|
 MAX  Corr Low Spool Speed NLR [%]|Max Limiter|Off|Off|Off|Off|Off|Off|Off|Off|Off|
 MAX  High Press Spool Speed NH [%]|Max Limiter|Off|Off|Off|Off|Off|Off|Off|Off|Off|
-MAX  Corr High Spool Speed NHR [%]|Max Limiter|Off|85|85|82.5|81.5|81|79.5|79|70.5|
+MAX  Corr High Spool Speed NHR [%]|Max Limiter|Off|Off|Off|Off|Off|Off|Off|Off|Off|
 MAX  Comp Exit Temperature T3 [K]|Max Limiter|Off|Off|Off|Off|Off|Off|Off|Off|Off|
 MAX  Compr Exit Pressure P3 [kPa]|Max Limiter|Off|Off|Off|Off|Off|Off|Off|Off|Off|
-MAX  HPT Rotor Inlet Temp T41 [K]|Max Limiter|1850|1850|1850|1850|1850|1850|1850|1850|1850|
+MAX  HPT Rotor Inlet Temp T41 [K]|Max Limiter|1700|1700|1700|1700|1700|1700|1700|1700|1700|
 MAX  LPT Inlet Temp T45 [K]|Max Limiter|Off|Off|Off|Off|Off|Off|Off|Off|Off|
 MAX  Turb Exit Temperature T5 [K]|Max Limiter|Off|Off|Off|Off|Off|Off|Off|Off|Off|
 MAX  Fuel Flow [kg/s]|Max Limiter|Off|Off|Off|Off|Off|Off|Off|Off|Off|
