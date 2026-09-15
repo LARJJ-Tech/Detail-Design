@@ -5,6 +5,31 @@ clear;
 
 % FIND A0, A1, Ath, A*
 
+clc;
+clear;
+
+% FIND: A0, A1, Ath, A*
+
+%% INPUTS (for cruise which has highest mass flow)
+
+% Constant assumptions
+gamma = 1.4;
+R = 287.05;
+
+% Altitude @ Cruise
+alt_ft = 11582.4; % cruise alt in ft
+alt_m = alt_ft*0.3048; % cruise alt in m
+
+% Finding atmos conditions @ cruise
+[Ts,~,Ps,rho] = atmosisa(alt_m);
+
+W2_corr = 60.7704; % corrected mass flow @ S2 (fan inlet)
+W2 = 17.7809; % mass flow @ S2 (fan inlet)
+
+% Values for Each Station
+% Station [0 1 2 8]
+M = [0.63 ?? 0.431946 1]
+
 M0 = 0.63
 M1 =
 
@@ -36,6 +61,7 @@ alt_m = alt_ft * 0.3048;
 
 [Ts,~,Ps,rho] = atmosisa(alt_m);
 gamma = 1.4; R = 287.05; 
+
 
 % GASTURB Engine Stations (INPUTS)
 % Wcorr = 250; % Corrected Mass Flow 
