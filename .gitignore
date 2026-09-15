@@ -1,3 +1,6 @@
 # Local generated or temporary data
 Data/LocalData/*
 !Data/LocalData/.gitkeep
+.DS_Store
+Last_[0-3]_???.???
+.asv

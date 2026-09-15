@@ -188,7 +188,7 @@ jobs:
                 #   engineAPI_APIResponse.md
                 #   performance-report.md
                 if [[ ! "$stem" =~ ^[a-z][A-Za-z0-9]*(_[a-z][A-Za-z0-9]*)*$ ]] ||
-                   [[ ! "$extension" =~ ^[a-z0-9]+$ ]]; then
+                   [[ ! "$extension" =~ ^[A-Za-z0-9]+$ ]]; then
                   invalid_files+=("$path")
                 fi
               fi
@@ -222,7 +222,7 @@ jobs:
           fi
 
           if ((${#invalid_files[@]} > 0)); then
-            echo "::error::File names must use camelCase sections separated by underscores and a lowercase extension."
+            echo "::error::File names must use camelCase sections separated by underscores."
             printf '  %s\n' "${invalid_files[@]}"
             echo
             failed=1
