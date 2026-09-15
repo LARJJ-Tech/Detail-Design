@@ -3,11 +3,6 @@
 clc;
 clear;
 
-% FIND A0, A1, Ath, A*
-
-clc;
-clear;
-
 % FIND: A0, A1, Ath, A*
 
 %% INPUTS (for cruise which has highest mass flow)
