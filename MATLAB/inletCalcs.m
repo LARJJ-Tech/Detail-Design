@@ -20,7 +20,7 @@ W_corr = [60.7704;
           60.021; 
           53.371; 
           54.914];
-% Stations: [0 1 2 8]
+% Stations: [0 1 Throat 2 8] ADD IN THROAT STATION LATER
 M = [0.63 0.6 0.431916 1;
      0.8  0.6 0.42975  1; 
      0.7  0.6 0.384309 1; 
@@ -28,19 +28,19 @@ M = [0.63 0.6 0.431916 1;
      0.2  0.6 0.368403 1; 
      0    0.6 0.381166 1]; 
 A = [0.376589 0.161393]; % Stations 2,8 ONLY, same across all conditions
-Tt = [216.65 233.89 233.89 484.17; 
+Tt = [216.65 233.89 233.89 484.17; % temperature would be the same as stations 1 and 2
       216.65 244.44 244.44 500.02; 
       268.34 294.68 294.68 544.62; 
       216.65 244.44 244.44 506.92; 
       295.65 298.02 298.02 532.95; 
       288.15 288.15 288.15 527.87];
-Pt = [20.647 26.981 26.711 60.354; 
+Pt = [20.647 26.981 26.711 60.354; % INLET PRESSURE loss factor at inlet lip, can apply that to find pressure 
       20.647 31.483 31.168 69.728; 
       69.682 96.663 95.696 186.042; 
       17.034 25.973 25.713 57.463; 
       101.325 104.191 103.149 190.295; 
       101.325 101.325 100.312 192.715];
-Ath = 0.163027; % same across all conditions
+Ath = 0.163027; % m^2, same across all conditions, from cell L65 in comprehensiveMissionPerformanceData excel
 
 %% For Loop
 for k=1:height(M)
@@ -82,7 +82,6 @@ for k=1:height(M)
     A2new(k) = AR(4)*Anew(3);
     D2new(k) = (2*sqrt(A2new(k)/pi))*39.3701; % in
 
-    Ath = 0.1630; % m^2, from cell L65 in comprehensiveMissionPerformanceData excel
     Dth = (2*sqrt(Ath/pi))*39.3701;
 
     fprintf('\n')
