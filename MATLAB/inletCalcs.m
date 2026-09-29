@@ -20,7 +20,7 @@ W_corr = [60.7704;
           60.021; 
           53.371; 
           54.914];
-% Stations: [0 1 Throat 2 8] ADD IN THROAT STATION LATER
+% Stations: [0 1 Throat 2 8] 
 M = [0.63 0.6 0.7 0.431916 1;
      0.8  0.6 0.7 0.42975  1; 
      0.7  0.6 0.7 0.384309 1; 
@@ -28,14 +28,14 @@ M = [0.63 0.6 0.7 0.431916 1;
      0.2  0.6 0.7 0.368403 1; 
      0    0.6 0.7 0.381166 1]; 
 A = [0.376589 0.161393]; % Stations 2,8 ONLY, same across all conditions
-Tt = [216.65 233.89 233.89 233.89 484.17; % temperature would be the same as stations 1 and 2
+Tt = [216.65 233.89 233.89 233.89 484.17; % T1 = Tth = T2
       216.65 244.44 244.44 244.44 500.02; 
       268.34 294.68 294.68 294.68 544.62; 
       216.65 244.44 244.44 244.44 506.92; 
       295.65 298.02 298.02 298.02 532.95; 
       288.15 288.15 288.15 288.15 527.87];
-Pt = [20.647  26.981  26.981  26.711  60.354; % INLET PRESSURE loss factor at inlet lip, can apply that to find pressure 
-      20.647  31.483  31.483  31.168  69.728; % send help why is throat greater than s1
+Pt = [20.647  26.981  26.981  26.711  60.354; % Pressure barely changes from S1 to Sth
+      20.647  31.483  31.483  31.168  69.728; 
       69.682  96.663  96.663  95.696  186.042; 
       17.034  25.973  25.973  25.713  57.463; 
       101.325 104.191 104.191 103.149 190.295; 
@@ -78,19 +78,18 @@ for k=1:height(M)
 
     % Inlet Area Calculations
     
-    % this uses one specific area point as a reference
+    % These calcs use the AR of S1 as a reference for scaling
     A1new(k)  = Anew(2);
     Athnew(k) = Anew(2) * (AR(3) / AR(2));
     A2new(k)  = Anew(2) * (AR(4) / AR(2));
     
+    % Commented out is the old way of doing it, which messed up scaling
     %A1new(k) = AR(5)*Anew(2); % m2
     D1new(k) = (2*sqrt(A1new(k)/pi))*39.3701; % in
     %A2new(k) = AR(5)*Anew(4);
     D2new(k) = (2*sqrt(A2new(k)/pi))*39.3701; % in
     %Athnew(k) = AR(3)*Anew(2);
     Dthnew(k) = (2*sqrt(Athnew(k)/pi))*39.3701; % in
-
-    
 
     Dnozzth = (2*sqrt(Anozzth/pi))*39.3701;
 
@@ -99,16 +98,15 @@ for k=1:height(M)
     fprintf('D1 = %.2f in\n\n Dth = %.2f m^2\n\n D2 = %.2f in\n\n Dnozzth = %.2f in\n\n', D1new(k), Dthnew(k), D2new(k), Dnozzth)
     fprintf('\n\n--------------\n\n')
 
-    x = [1 2 3 4];
-    y = [A1new(k) Athnew(k) A2new(k) Anozzth];
+    x = [0 1 2 3];
+    y = [D1new(k)/2 Dthnew(k)/2 D2new(k)/2 Dnozzth/2];
 
     plot(x, y, 'LineWidth', 1.5)
     hold on
     grid on
-    title('yeetus deletus')
-    xlabel('yeet')
-    ylabel('eet')
-    ylim([0 1])
-    
-
+    title('Half-View of Engine from the Side')
+    legend('Cruise', 'TOC', 'Manuever', 'Ceiling', 'RTO', 'SLS')
+    xlabel('Stations (0=0, 1=1, Th=2, 8=3)')
+    ylabel('Vertical Length (Half of Diameter) (in)')
+    ylim([0 15]) % this is just so I can see a more zoomed-out view, but feel free to comment out this line to see a betteer graph
 end
