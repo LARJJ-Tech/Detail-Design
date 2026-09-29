@@ -18,7 +18,7 @@ alt_m = [11582;
 
 % From GasTurb -> Off Design -> Standard Maps -> engineCycle.CYM -> Mission
 % (Run) -> Read -> Mission Folder -> constraints.MSN -> Run -> Click any
-% empty cell for desired point -> Details -> Find values on summary page
+% selectable cell for desired point -> Details -> Find values on summary page
 % (use Station 2)
 W_corr = [60.7704; 
           60.524;
@@ -33,7 +33,7 @@ W_corr = [60.7704;
 % Throat is an assumption, higher is generally better, but M<=0.75
 % The rest is from GasTurb -> Off Design -> Standard Maps -> engineCycle.CYM -> Mission
 % (Run) -> Read -> Mission Folder -> constraints.MSN -> Run -> Click any
-% empty cell for desired point -> Details -> Find values on stations page
+% selectable cell for desired point -> Details -> Find values on stations page
 M = [0.63 0.6 0.7 0.431916 1;
      0.8  0.6 0.7 0.42975  1; 
      0.7  0.6 0.7 0.384309 1; 
@@ -43,12 +43,12 @@ M = [0.63 0.6 0.7 0.431916 1;
 
 % From GasTurb -> Off Design -> Standard Maps -> engineCycle.CYM -> Mission
 % (Run) -> Read -> Mission Folder -> constraints.MSN -> Run -> Click any
-% empty cell for desired point -> Details -> Find values on stations page
+% selectable cell for desired point -> Details -> Find values on stations page
 A = [0.376589 0.161393]; % Stations 2,8 ONLY, same across all conditions
 
 % From GasTurb -> Off Design -> Standard Maps -> engineCycle.CYM -> Mission
 % (Run) -> Read -> Mission Folder -> constraints.MSN -> Run -> Click any
-% empty cell for desired point -> Details -> Find values on summary page
+% selectable cell for desired point -> Details -> Find values on summary page
 Tt = [216.65 233.89 233.89 233.89 484.17; % T1 = Tth = T2
       216.65 244.44 244.44 244.44 500.02; 
       268.34 294.68 294.68 294.68 544.62; 
@@ -58,7 +58,7 @@ Tt = [216.65 233.89 233.89 233.89 484.17; % T1 = Tth = T2
 
 % From GasTurb -> Off Design -> Standard Maps -> engineCycle.CYM -> Mission
 % (Run) -> Read -> Mission Folder -> constraints.MSN -> Run -> Click any
-% empty cell for desired point -> Details -> Find values on summary page
+% selectable cell for desired point -> Details -> Find values on summary page
 Pt = [20.647  26.981  26.981  26.711  60.354; % Pressure barely changes from S1 to Sth
       20.647  31.483  31.483  31.168  69.728; 
       69.682  96.663  96.663  95.696  186.042; 
