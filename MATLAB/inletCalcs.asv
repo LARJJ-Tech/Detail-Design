@@ -17,9 +17,7 @@ alt_m = [11582;
          0];
 
 % From GasTurb -> Off Design -> Standard Maps -> engineCycle.CYM -> Mission
-% (Run) -> Read -> Mission Folder -> constraints.MSN -> Run -> Click any
-% empty cell for desired point -> Details -> Find values on summary page
-% (use Station 2)
+% -> Run
 W_corr = [60.7704; 
           60.524;
           55.288; 
@@ -28,12 +26,7 @@ W_corr = [60.7704;
           54.914];
 
 % Stations: [0 1 Throat 2 8] 
-% Station 0 Mach is from Row 7 in constraintPerformanceData excel
-% Station 1 is an assumption
-% Throat is an assumption, higher is generally better, but M<=0.75
-% The rest is from GasTurb -> Off Design -> Standard Maps -> engineCycle.CYM -> Mission
-% (Run) -> Read -> Mission Folder -> constraints.MSN -> Run -> Click any
-% empty cell for desired point -> Details -> Find values on stations page
+% Find
 M = [0.63 0.6 0.7 0.431916 1;
      0.8  0.6 0.7 0.42975  1; 
      0.7  0.6 0.7 0.384309 1; 
@@ -41,14 +34,10 @@ M = [0.63 0.6 0.7 0.431916 1;
      0.2  0.6 0.7 0.368403 1; 
      0    0.6 0.7 0.381166 1]; 
 
-% From GasTurb -> Off Design -> Standard Maps -> engineCycle.CYM -> Mission
-% (Run) -> Read -> Mission Folder -> constraints.MSN -> Run -> Click any
-% empty cell for desired point -> Details -> Find values on stations page
+% Find
 A = [0.376589 0.161393]; % Stations 2,8 ONLY, same across all conditions
 
-% From GasTurb -> Off Design -> Standard Maps -> engineCycle.CYM -> Mission
-% (Run) -> Read -> Mission Folder -> constraints.MSN -> Run -> Click any
-% empty cell for desired point -> Details -> Find values on summary page
+% Find
 Tt = [216.65 233.89 233.89 233.89 484.17; % T1 = Tth = T2
       216.65 244.44 244.44 244.44 500.02; 
       268.34 294.68 294.68 294.68 544.62; 
@@ -56,9 +45,7 @@ Tt = [216.65 233.89 233.89 233.89 484.17; % T1 = Tth = T2
       295.65 298.02 298.02 298.02 532.95; 
       288.15 288.15 288.15 288.15 527.87];
 
-% From GasTurb -> Off Design -> Standard Maps -> engineCycle.CYM -> Mission
-% (Run) -> Read -> Mission Folder -> constraints.MSN -> Run -> Click any
-% empty cell for desired point -> Details -> Find values on summary page
+% Find
 Pt = [20.647  26.981  26.981  26.711  60.354; % Pressure barely changes from S1 to Sth
       20.647  31.483  31.483  31.168  69.728; 
       69.682  96.663  96.663  95.696  186.042; 
