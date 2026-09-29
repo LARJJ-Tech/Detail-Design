@@ -117,7 +117,7 @@ for k=1:height(M)
 
     fprintf('\n')
     fprintf('A1 = %.2f m^2\n\n Ath = %.2f m^2\n\n A2 = %.2f m^2\n\n Anozzth = %.2f m^2\n\n', A1new(k), Athnew(k), A2new(k), Anozzth)
-    fprintf('D1 = %.2f in\n\n Dth = %.2f m^2\n\n D2 = %.2f in\n\n Dnozzth = %.2f in\n\n', D1new(k), Dthnew(k), D2new(k), Dnozzth)
+    fprintf('D1 = %.2f in\n\n Dth = %.2f in\n\n D2 = %.2f in\n\n Dnozzth = %.2f in\n\n', D1new(k), Dthnew(k), D2new(k), Dnozzth)
     fprintf('\n\n--------------\n\n')
 
     x = [0 1 2 3];
