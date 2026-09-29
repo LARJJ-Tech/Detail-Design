@@ -1,4 +1,4 @@
-% FIND: A0, A1, Ath
+% FIND: A1, Ath, A2, Anozzth
 clc;
 clear;
 
@@ -77,12 +77,20 @@ for k=1:height(M)
     NacelleDiameter = 2*sqrt(NacelleArea/pi); % m
 
     % Inlet Area Calculations
-    A1new(k) = AR(5)*Anew(2); % m2
+    
+    % this uses one specific area point as a reference
+    A1new(k)  = Anew(2);
+    Athnew(k) = Anew(2) * (AR(3) / AR(2));
+    A2new(k)  = Anew(2) * (AR(4) / AR(2));
+    
+    %A1new(k) = AR(5)*Anew(2); % m2
     D1new(k) = (2*sqrt(A1new(k)/pi))*39.3701; % in
-    A2new(k) = AR(5)*Anew(4);
+    %A2new(k) = AR(5)*Anew(4);
     D2new(k) = (2*sqrt(A2new(k)/pi))*39.3701; % in
-    Athnew(k) = AR(3)*Anew(2);
+    %Athnew(k) = AR(3)*Anew(2);
     Dthnew(k) = (2*sqrt(Athnew(k)/pi))*39.3701; % in
+
+    
 
     Dnozzth = (2*sqrt(Anozzth/pi))*39.3701;
 
@@ -100,7 +108,7 @@ for k=1:height(M)
     title('yeetus deletus')
     xlabel('yeet')
     ylabel('eet')
-    ylim([0 0.5])
+    ylim([0 1])
     
 
 end
