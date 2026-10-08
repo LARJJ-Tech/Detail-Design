@@ -40,7 +40,7 @@ LHV = 43.15*10^6;
 dPtpt = -0.05; 
 
 % Calculations
-qref = (rho3*Vref^2)/2;                 % m^3/s
+qref = (rho3*Vref^2)/2;                 % kg/(m^2*s)
 Mref = Vref/sqrt(gamma*R*Tt3);          % no units
 PressureLossCoeff = (Pt4-Pt3)/qref;     % no units
 Aref = sqrt(((R/2)*(mdot3*(sqrt(Tt3)/Pt3))^2*PressureLossCoeff)/dPtpt);
