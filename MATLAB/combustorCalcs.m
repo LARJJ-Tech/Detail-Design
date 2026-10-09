@@ -46,12 +46,17 @@ K_OTDF = -0.07; %-0.07  for can, -0.05 for annular
 qref = (rho3*Vref^2)/2; % kg/m^3 * m^2/s^2, kg/ms^2
 PressureLossCoeff = (Pt4-Pt3)/qref;
 
+Mref = Vref/sqrt(gamma*R*Tt3); % no units
+Vref = mdot3/(rho3*Aref); % m/s
+
 Aref = sqrt(((R/2)*(mdot3*(sqrt(Tt3)/Pt3))^2*PressureLossCoeff)/dPtpt);
+Dref = (2*sqrt(Aref/pi))*(12/0.3048); % in
 
 Aliner = 0.50*Aref;
+Dliner = (2*sqrt(Aliner/pi))*(12/0.3048); % in
 
-
-
+VolRef = (pi*Dref^3)/6;
+VolLiner = (pi*Dliner^3)/6;
 
 
 
@@ -59,18 +64,4 @@ Aliner = 0.50*Aref;
 
 %% NOT USING THIS BUT I'M KEEPING IT AROUND DO NOT TOUCH THIS
 
-
-% Calculations
-%Mref = Vref/sqrt(gamma*R*Tt3);          % no units
-%Vref = mdot3/(rho3*Aref);               % m/s
-
-% Combustor Loading
-%Dliner = 2*sqrt(Aliner/pi);
-%VolumeLiner = (pi*Dliner^3)/6;
 %combustorloading = mdot3/(VolumeLiner*(Pt3^1.8)*10^0.00145*(Tt3-400));
-
-%Dref = 2*sqrt(Aref/pi);
-%D_in = Dref*12/0.3048;
-
-%Dliner = 2*sqrt(Aliner/pi);
-%Dliner_in = Dliner*12/0.3048;
