@@ -26,34 +26,61 @@ EquivalenceRatio = FAR/FARstoich;
 % for TOC -> Details -> Find on stations or summary page
 mdot3 = 6.200;  % kg/s
 rho3 = 3.37093; % kg/m^3
-Pt4 = 573.768;  % kPa
-Pt3 = 604.722;  % kPa
+Pt4 = 573768;  % kPa
+Pt3 = 604722;  % kPa
 Tt3 = 612.31;  % K
+Tt4 = 1600; % K [GET THIS FROM GASTURB CUZ RN ITS FILLER]
 Vref = 108.06;  % m/s
 
 gamma = 1.4;
 R = 287;
 LHV = 43.15*10^6;
 
-% Combustor Pressure loss
-% Can assume dPt/Pt ~5-6%, but high speed engines can be ~7%
-dPtpt = -0.05; 
+dPtpt = -0.05; % comb press loss, can assume ~5-6% but can be ~7% for high speed engines
+
+combustor_type = 'can'; % Combustor type: 'annular', 'can'
+TR = Tt4 / Tt3; % Temp ratio
+omega_hot = 1.3 * (TR - 1); % Hot loss coeff
+
+% Selecting omega_cold based on combuster type
+if strcmpi(combustor_type, 'can')
+    omega_cold = 37;
+    K_OTDF = -0.07;
+elseif strcmpi(combustor_type, 'annular')
+    omega_cold = 16;
+    K_OTDF = -0.05;
+else
+    error('Unknown combustor type.');
+end
+
+qref = (rho3*Vref^2)/2; % kg/m^3 * m^2/s^2, kg/ms^2
+PressureLossCoeff = (Pt4-Pt3)/qref;
+
+Aref = sqrt(((R/2)*(mdot3*(sqrt(Tt3)/Pt3))^2*PressureLossCoeff)/dPtpt);
+
+Aliner = 0.50*Aref;
+
+
+
+
+
+
+
+
+%% NOT USING THIS BUT I'M KEEPING IT AROUND DO NOT TOUCH THIS
+
 
 % Calculations
-qref = (rho3*Vref^2)/2;                 % m^3/s
-Mref = Vref/sqrt(gamma*R*Tt3);          % no units
-PressureLossCoeff = (Pt4-Pt3)/qref;     % no units
-Aref = sqrt(((R/2)*(mdot3*(sqrt(Tt3)/Pt3))^2*PressureLossCoeff)/dPtpt);
-Vref = mdot3/(rho3*Aref);               % m/s
+%Mref = Vref/sqrt(gamma*R*Tt3);          % no units
+%Vref = mdot3/(rho3*Aref);               % m/s
 
 % Combustor Loading
-Aliner = 0.60*Aref;
-Dliner = 2*sqrt(Aliner/pi);
-VolumeLiner = (pi*Dliner^3)/6;
-combustorloading = mdot3/(VolumeLiner*(Pt3^1.8)*10^0.00145*(Tt3-400));
+%Dliner = 2*sqrt(Aliner/pi);
+%VolumeLiner = (pi*Dliner^3)/6;
+%combustorloading = mdot3/(VolumeLiner*(Pt3^1.8)*10^0.00145*(Tt3-400));
 
-Dref = 2*sqrt(Aref/pi);
-D_in = Dref*12/0.3048;
+%Dref = 2*sqrt(Aref/pi);
+%D_in = Dref*12/0.3048;
 
-Dliner = 2*sqrt(Aliner/pi);
-Dliner_in = Dliner*12/0.3048;
+%Dliner = 2*sqrt(Aliner/pi);
+%Dliner_in = Dliner*12/0.3048;
