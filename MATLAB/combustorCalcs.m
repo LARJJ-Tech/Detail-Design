@@ -40,8 +40,8 @@ dPtpt = -0.05; % comb press loss, can assume ~5-6% but can be ~7% for high speed
 
 TR = Tt4 / Tt3; % Temp ratio
 omega_hot = 1.3 * (TR - 1); % Hot loss coeff
-omega_cold = 37; % 37 for can, 16 for annular
-K_OTDF = -0.07; %-0.07  for can, -0.05 for annular
+omega_cold = 16; % 37 for can, 16 for annular
+K_OTDF = -0.05; %-0.07  for can, -0.05 for annular
 
 
 % Aref and Aliner and Volume Calcs
@@ -63,6 +63,12 @@ VolLiner = (pi*Dliner^3)/6;
 
 % Flow Distribution Calcs
 
+
+% Combustor Length Calcs
+
+% Combustion Efficiency Calcs
+
+% Liner Hole Total Area Calcs
 
 %% NOT USING THIS BUT I'M KEEPING IT AROUND DO NOT TOUCH THIS
 
