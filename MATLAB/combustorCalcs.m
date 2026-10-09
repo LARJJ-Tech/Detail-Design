@@ -28,9 +28,12 @@ mdot3 = 6.200;  % kg/s
 rho3 = 3.37093; % kg/m^3
 Pt4 = 573768;  % kPa
 Pt3 = 604722;  % kPa
+Pt3atm = Pt3/101300; % atm
 Tt3 = 612.31;  % K
-Tt4 = 1600; % K [GET THIS FROM GASTURB CUZ RN ITS FILLER]
-Vref = 108.06;  % m/s
+Tt4 = 1497.91; % K
+Vref = 207.37;  % m/s
+Tres = 0.003; % s
+CombLoading = 150; % kg/s atm^1.8 m^3, [SPECIFY W VIDAL]
 
 gamma = 1.4;
 R = 287;
@@ -58,7 +61,6 @@ VolRef = (pi*Dref^3)/6;
 VolLiner = (pi*Dliner^3)/6;
 
 Mref = Vref/sqrt(gamma*R*Tt3); % no units
-Vref = mdot3/(rho3*Aref); % m/s
 
 
 % Flow Distribution Calcs
