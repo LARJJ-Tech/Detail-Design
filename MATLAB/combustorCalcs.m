@@ -38,20 +38,10 @@ LHV = 43.15*10^6;
 
 dPtpt = -0.05; % comb press loss, can assume ~5-6% but can be ~7% for high speed engines
 
-combustor_type = 'can'; % Combustor type: 'annular', 'can'
 TR = Tt4 / Tt3; % Temp ratio
 omega_hot = 1.3 * (TR - 1); % Hot loss coeff
-
-% Selecting omega_cold based on combuster type
-if strcmpi(combustor_type, 'can')
-    omega_cold = 37;
-    K_OTDF = -0.07;
-elseif strcmpi(combustor_type, 'annular')
-    omega_cold = 16;
-    K_OTDF = -0.05;
-else
-    error('Unknown combustor type.');
-end
+omega_cold = 37; % 37 for can, 16 for annular
+K_OTDF = -0.07; %-0.07  for can, -0.05 for annular
 
 qref = (rho3*Vref^2)/2; % kg/m^3 * m^2/s^2, kg/ms^2
 PressureLossCoeff = (Pt4-Pt3)/qref;
