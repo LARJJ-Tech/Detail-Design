@@ -43,6 +43,8 @@ omega_hot = 1.3 * (TR - 1); % Hot loss coeff
 omega_cold = 37; % 37 for can, 16 for annular
 K_OTDF = -0.07; %-0.07  for can, -0.05 for annular
 
+
+% Aref and Aliner and Volume Calcs
 qref = (rho3*Vref^2)/2; % kg/m^3 * m^2/s^2, kg/ms^2
 PressureLossCoeff = (Pt4-Pt3)/qref;
 
@@ -59,7 +61,7 @@ VolRef = (pi*Dref^3)/6;
 VolLiner = (pi*Dliner^3)/6;
 
 
-
+% Flow Distribution Calcs
 
 
 %% NOT USING THIS BUT I'M KEEPING IT AROUND DO NOT TOUCH THIS
