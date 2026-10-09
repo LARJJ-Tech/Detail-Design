@@ -52,10 +52,10 @@ qref = (rho3*Vref^2)/2; % kg/m^3 * m^2/s^2, kg/ms^2
 PressureLossCoeff = (Pt4-Pt3)/qref;
 
 Aref = sqrt(((R/2)*(mdot3*(sqrt(Tt3)/Pt3))^2*PressureLossCoeff)/dPtpt);
-Dref = (2*sqrt(Aref/pi))*(12/0.3048); % in
+Dref = 2*sqrt(Aref/pi); % m
 
 Aliner = 0.50*Aref;
-Dliner = (2*sqrt(Aliner/pi))*(12/0.3048); % in
+Dliner = 2*sqrt(Aliner/pi); % m
 
 VolRef = (pi*Dref^3)/6;
 VolLiner = (pi*Dliner^3)/6;
@@ -67,6 +67,8 @@ Mref = Vref/sqrt(gamma*R*Tt3); % no units
 
 
 % Combustor Length Calcs
+
+LRef = VolRef/Aref;
 
 % Combustion Efficiency Calcs
 
