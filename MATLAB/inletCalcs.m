@@ -132,3 +132,17 @@ for k=1:height(M)
     ylabel('Vertical Length (Half of Diameter) (in)')
     ylim([0 15]) % this is just so I can see a more zoomed-out view, but feel free to comment out this line to see a betteer graph
 end
+
+%% Calculating length based on the second run through (TOC) of the above steps
+
+A1 = 0.34; % m^2
+
+A2 = 0.43; % m^2
+
+theta = 7; % deg, typical range is 5-7 for deflection angle to prevent separation
+
+r1 = sqrt(A1/pi);
+
+r2 = sqrt(A2/pi);
+
+Linlet = (r2-r1)/tan(deg2rad(theta));
