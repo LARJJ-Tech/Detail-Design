@@ -19,7 +19,7 @@ fprintf("Design HPT at: %s\n\n", condt)
 fprintf("==================================================================\n\n")
 
 %% HP cyc
-cycc = data(["HPC Inlet Flow W25","HPC Inlet Pressure P25","Fan Inner Exit Temp T21","HPC Spec. Work"],condt);
+cycc = data(["HPC Inlet Flow W25","HPC Inlet Pressure P25","Fan Inner Exit Temp T21","HPC Spec. Work"],condc);
 disp(cycc)
 
 cyct = data(["HPT Rotor Inlet Flow W41","Burner Exit Pressure P4","HPT Rotor Inlet Temp T41","HPT Spec. Work"],condt);
@@ -68,7 +68,7 @@ fprintf("==================================================================\n\n"
 lpcspeed = data{"Rel. LP Spool Speed",condf};
 lptspeed = data{"Rel. LP Spool Speed",condlt};
 
-LPCrpm = 9933.73;
+LPCrpm = 9943.19;
 
 LPTrpm = LPCrpm * (lptspeed/lpcspeed);
 fprintf("LPC RPM: %f\n",LPCrpm)
@@ -118,9 +118,9 @@ fprintf("==================================================================\n")
 
 %% OD Values
 %LPC
-LPCeff = 0.938*LPCeffRatio;
-LPCpr = 1.99*LPCprRatio;
-LPCrpmd = 9933.73*LPCrpmRatio;
+LPCeff = 0.932*LPCeffRatio;
+LPCpr = 2.06*LPCprRatio;
+LPCrpmd = 9943.19*LPCrpmRatio;
 
 %HPC
 HPCeff = 0.872*HPCeffRatio;
@@ -128,13 +128,13 @@ HPCpr = 8.99*HPCprRatio;
 HPCrpmd = 21842.86*HPCrpmRatio;
 
 %HPT
-HPTeff = 0.925*HPTeffRatio;
-HPTpr = 3.53*HPTprRatio;
+HPTeff = 0.898*HPTeffRatio;
+HPTpr = 2.96*HPTprRatio;
 HPTrpmd = 22831.1*HPTrpmRatio;
 
 %LPT
-LPTeff = 0.888*LPTeffRatio;
-LPTpr = 2.5*LPTprRatio;
+LPTeff = 0.932*LPTeffRatio;
+LPTpr = 2.36*LPTprRatio;
 LPTrpmd = 10172.57*LPTrpmRatio;
 
 fprintf("\nLPC  η : %f\n",LPCeff)
