@@ -2,9 +2,9 @@ clc; clear; close all;
 
 data = dataImport("..\Data\GasTurb\comprehensiveMissionPerformanceData.xlsx");
 %% HP c mf
-HPCm_dot = data("HPC Inlet C Flow W25Rstd",[2:11, 13:end]);
+HPCm_dot = data("HPC Pressure Ratio",[2:11, 13:end]);
 disp(HPCm_dot)
-HPCm_dot = data{"HPC Inlet C Flow W25Rstd",[2:11 13:end]};
+HPCm_dot = data{"HPC Pressure Ratio",[2:11 13:end]};
 [mfc, idxc] = max(HPCm_dot);
 condc = data.Properties.VariableNames{idxc+1};
 fprintf("Design HPC at: %s\n\n", condc)
@@ -39,9 +39,9 @@ fprintf("==================================================================\n\n"
 
 
 %% LP c mf
-HPCm_dot = data("Total Inlet C Flow W2Rstd",[2:11 13:end]);
+HPCm_dot = data("LPC Outer Pressure Ratio",[2:11 13:end]);
 disp(HPCm_dot)
-LPCm_dot = data{"Total Inlet C Flow W2Rstd",[2:11 13:end]};
+LPCm_dot = data{"LPC Outer Pressure Ratio",[2:11 13:end]};
 [mff, idxf] = max(LPCm_dot);
 % idxf = 9;
 condf = data.Properties.VariableNames{idxf+1};
