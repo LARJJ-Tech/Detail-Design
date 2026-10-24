@@ -136,13 +136,23 @@ end
 %% Calculating length based on the second run through (TOC) of the above steps
 
 A1 = 0.34; % m^2
-
 A2 = 0.43; % m^2
-
 theta = 7; % deg, typical range is 5-7 for deflection angle to prevent separation
 
 r1 = sqrt(A1/pi);
-
 r2 = sqrt(A2/pi);
 
 Linlet = (r2-r1)/tan(deg2rad(theta));
+
+%% Isentropic Efficiency
+
+M0_eff_calc = 0.8;
+Pt2_eff_calc = 31.168; % kPa
+Ps0_eff_calc = 20.647; % kPa
+
+Pt0_eff_calc = Ps0_eff_calc*(1+((gamma-1)/2)*M0_eff_calc^2)^(gamma/(gamma-1));
+
+Isen_Eff = ((Pt2_eff_calc / Ps0_eff_calc)^((gamma-1)/gamma) - 1) / ((Pt0_eff_calc / Ps0_eff_calc)^((gamma-1)/gamma) - 1)
+
+Pt2_over_Pt0 = ((1 + Isen_Eff * (((gamma-1)/2) * M0_eff_calc^2)) / (1 + ((gamma-1)/2) * M0_eff_calc^2))^(gamma/(gamma-1))
+
