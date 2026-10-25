@@ -30,7 +30,7 @@ fprintf("==================================================================\n\n"
 hpcspeed = data{"Rel. HP Spool Speed",condc};
 hptspeed = data{"Rel. HP Spool Speed",condt};
 
-HPCrpm = 21842.86;
+HPCrpm = 21079.32;
 
 HPTrpm = HPCrpm * (hptspeed/hpcspeed);
 fprintf("HPC RPM: %f\n",HPCrpm)
@@ -68,7 +68,7 @@ fprintf("==================================================================\n\n"
 lpcspeed = data{"Rel. LP Spool Speed",condf};
 lptspeed = data{"Rel. LP Spool Speed",condlt};
 
-LPCrpm = 9943.19;
+LPCrpm = 10820.73;
 
 LPTrpm = LPCrpm * (lptspeed/lpcspeed);
 fprintf("LPC RPM: %f\n",LPCrpm)
@@ -83,73 +83,105 @@ dataOD = dataImport("..\Data\GasTurb\onDesignPerformance.xlsx");
 LPCeffRatio = dataOD{"Polytr. Outer LPC Efficiency",2}/data{"Polytr. Outer LPC Efficiency",condf};
 LPCprRatio = (dataOD{"Fan Outer Exit Press P13",2}/dataOD{"Inlet Pressure P2",2})/(data{"Fan Outer Exit Press P13",condf}/data{"Inlet Pressure P2",condf});
 LPCrpmRatio = dataOD{"Nominal LP Spool Speed [RPM]",2}/data{"LP Spool Speed [RPM]",condf};
+LPCTRatio = dataOD{"Fan Outer Exit Temp T13",2}/data{"Fan Outer Exit Temp T13",condf};
+LPCPRatio = dataOD{"Fan Outer Exit Press P13",2}/data{"Fan Outer Exit Press P13",condf};
 
 %HPC
 HPCeffRatio = dataOD{"Polytropic HPC Efficiency",2}/data{"Polytropic HPC Efficiency",condc};
 HPCprRatio = (dataOD{"HPC Exit Pressure P3",2}/dataOD{"HPC Inlet Pressure P25",2})/(data{"HPC Exit Pressure P3",condc}/data{"HPC Inlet Pressure P25",condc});
 HPCrpmRatio = dataOD{"Nominal HP Spool Speed [RPM]",2}/data{"HP Spool Speed [RPM]",condc};
+HPCTRatio = dataOD{"HPC Exit Temperature T3",2}/data{"HPC Exit Temperature T3",condc};
+HPCPRatio = dataOD{"HPC Exit Pressure P3",2}/data{"HPC Exit Pressure P3",condc};
 
 %HPT
 HPTeffRatio = dataOD{"Polytropic HPT Efficiency",2}/data{"Polytropic HPT Efficiency",condt};
 HPTprRatio = (dataOD{"Burner Exit Pressure P4",2}/dataOD{"HPT Exit Pressure P44",2})/(data{"Burner Exit Pressure P4",condt}/data{"HPT Exit Pressure P44",condt});
 HPTrpmRatio = dataOD{"Nominal HP Spool Speed [RPM]",2}/data{"HP Spool Speed [RPM]",condt};
+HPTTRatio = dataOD{"LPT Inlet Temperature T45",2}/data{"LPT Inlet Temperature T45",condt};
+HPTPRatio = dataOD{"HPT Exit Pressure P44",2}/data{"HPT Exit Pressure P44",condt};
 
 %LPT
 LPTeffRatio = dataOD{"Polytropic LPT Efficiency",2}/data{"Polytropic LPT Efficiency",condlt};
 LPTprRatio = (dataOD{"LPT Inlet Pressure P45",2}/dataOD{"LPT Exit Pressure P5",2})/(data{"LPT Inlet Pressure P45",condlt}/data{"LPT Exit Pressure P5",condlt});
 LPTrpmRatio = dataOD{"Nominal LP Spool Speed [RPM]",2}/data{"LP Spool Speed [RPM]",condlt};
+LPTTRatio = dataOD{"LPT Exit Temperature T5",2}/data{"LPT Exit Temperature T5",condlt};
+LPTPRatio = dataOD{"LPT Exit Pressure P5",2}/data{"LPT Exit Pressure P5",condlt};
 
 fprintf("\nLPC  η  Ratio: %f\n",LPCeffRatio)
-fprintf("LPC  P  Ratio: %f\n",LPCprRatio)
-fprintf("LPC RPM Ratio: %f\n\n",LPCrpmRatio)
+fprintf("LPC  PR  Ratio: %f\n",LPCprRatio)
+fprintf("LPC RPM Ratio: %f\n",LPCrpmRatio)
+fprintf("LPC T Ratio: %f\n",LPCTRatio)
+fprintf("LPC P Ratio: %f\n\n",LPCPRatio)
 
 fprintf("HPC  η  Ratio: %f\n",HPCeffRatio)
-fprintf("HPC  P  Ratio: %f\n",HPCprRatio)
-fprintf("HPC RPM Ratio: %f\n\n",HPCrpmRatio)
+fprintf("HPC  PR  Ratio: %f\n",HPCprRatio)
+fprintf("HPC RPM Ratio: %f\n",HPCrpmRatio)
+fprintf("HPC T Ratio: %f\n",HPCTRatio)
+fprintf("HPC P Ratio: %f\n\n",HPCPRatio)
 
 fprintf("HPT  η  Ratio: %f\n",HPTeffRatio)
-fprintf("HPT  P  Ratio: %f\n",HPTprRatio)
-fprintf("HPT RPM Ratio: %f\n\n",HPTrpmRatio)
+fprintf("HPT  PR  Ratio: %f\n",HPTprRatio)
+fprintf("HPT RPM Ratio: %f\n",HPTrpmRatio)
+fprintf("HPT T Ratio: %f\n",HPTTRatio)
+fprintf("HPT P Ratio: %f\n\n",HPTPRatio)
 
 fprintf("LPT  η  Ratio: %f\n",LPTeffRatio)
-fprintf("LPT  P  Ratio: %f\n",LPTprRatio)
-fprintf("LPT RPM Ratio: %f\n\n",LPTrpmRatio)
+fprintf("LPT  PR  Ratio: %f\n",LPTprRatio)
+fprintf("LPT RPM Ratio: %f\n",LPTrpmRatio)
+fprintf("LPT T Ratio: %f\n",LPTTRatio)
+fprintf("LPT P Ratio: %f\n\n",LPTPRatio)
 fprintf("==================================================================\n")
 
 %% OD Values
 %LPC
-LPCeff = 0.932*LPCeffRatio;
-LPCpr = 2.06*LPCprRatio;
-LPCrpmd = 9943.19*LPCrpmRatio;
+LPCeff = 0.929*LPCeffRatio;
+LPCpr = 1.99*LPCprRatio;
+LPCrpmd = 10820.73*LPCrpmRatio;
+LPCt = 296.89*LPCTRatio;
+LPCp = 57.97*LPCPRatio;
 
 %HPC
-HPCeff = 0.872*HPCeffRatio;
-HPCpr = 8.99*HPCprRatio;
-HPCrpmd = 21842.86*HPCrpmRatio;
+HPCeff = 0.873*HPCeffRatio;
+HPCpr = 9.06*HPCprRatio;
+HPCrpmd = 21079.32*HPCrpmRatio;
+HPCt = 617.78*HPCTRatio;
+HPCp = 690.73*HPCPRatio;
 
 %HPT
-HPTeff = 0.898*HPTeffRatio;
-HPTpr = 2.96*HPTprRatio;
-HPTrpmd = 22831.1*HPTrpmRatio;
+HPTeff = 0.869*HPTeffRatio;
+HPTpr = 3.32*HPTprRatio;
+HPTrpmd = 22203.79*HPTrpmRatio;
+HPTt = 1132.57*HPTTRatio;
+HPTp = 445.73*HPTPRatio;
 
 %LPT
-LPTeff = 0.932*LPTeffRatio;
-LPTpr = 2.36*LPTprRatio;
-LPTrpmd = 10172.57*LPTrpmRatio;
+LPTeff = 0.945*LPTeffRatio;
+LPTpr = 2.31*LPTprRatio;
+LPTrpmd = 11265.87*LPTrpmRatio;
+LPTt = 931.49*LPTTRatio;
+LPTp = 192.74*LPTPRatio;
 
 fprintf("\nLPC  η : %f\n",LPCeff)
-fprintf("LPC  P  : %f\n",LPCpr)
+fprintf("LPC  PR  : %f\n",LPCpr)
+fprintf("LPC  T  : %f\n",LPCt)
+fprintf("LPC  P  : %f\n",LPCp)
 fprintf("LPC RPM : %f\n\n",LPCrpmd)
 
 fprintf("HPC  η  : %f\n",HPCeff)
-fprintf("HPC  P  : %f\n",HPCpr)
+fprintf("HPC  PR  : %f\n",HPCpr)
+fprintf("HPC  T  : %f\n",HPCt)
+fprintf("HPC  P  : %f\n",HPCp)
 fprintf("HPC RPM : %f\n\n",HPCrpmd)
 
 fprintf("HPT  η  : %f\n",HPTeff)
-fprintf("HPT  P  : %f\n",HPTpr)
+fprintf("HPT  PR  : %f\n",HPTpr)
+fprintf("HPT  T  : %f\n",HPTt)
+fprintf("HPT  P  : %f\n",HPTp)
 fprintf("HPT RPM : %f\n\n",HPTrpmd)
 
 fprintf("LPT  η  : %f\n",LPTeff)
-fprintf("LPT  P  : %f\n",LPTpr)
+fprintf("LPT  PR  : %f\n",LPTpr)
+fprintf("LPT  T  : %f\n",LPTt)
+fprintf("LPT  P  : %f\n",LPTp)
 fprintf("LPT RPM : %f\n\n",LPTrpmd)
 fprintf("==================================================================\n")
