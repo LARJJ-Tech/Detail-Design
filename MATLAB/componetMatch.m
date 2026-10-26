@@ -81,28 +81,28 @@ dataOD = dataImport("..\Data\GasTurb\onDesignPerformance.xlsx");
 
 %LPC
 LPCeffRatio = dataOD{"Polytr. Outer LPC Efficiency",2}/data{"Polytr. Outer LPC Efficiency",condf};
-LPCprRatio = (dataOD{"Fan Outer Exit Press P13",2}/dataOD{"Inlet Pressure P2",2})/(data{"Fan Outer Exit Press P13",condf}/data{"Inlet Pressure P2",condf});
+LPCprRatio = (((data{"Fan Outer Exit Press P13",condf}/data{"Inlet Pressure P2",condf})-1)/((dataOD{"Fan Outer Exit Press P13",2}/dataOD{"Inlet Pressure P2",2})-1));
 LPCrpmRatio = dataOD{"Nominal LP Spool Speed [RPM]",2}/data{"LP Spool Speed [RPM]",condf};
 LPCTRatio = dataOD{"Fan Outer Exit Temp T13",2}/data{"Fan Outer Exit Temp T13",condf};
 LPCPRatio = dataOD{"Fan Outer Exit Press P13",2}/data{"Fan Outer Exit Press P13",condf};
 
 %HPC
 HPCeffRatio = dataOD{"Polytropic HPC Efficiency",2}/data{"Polytropic HPC Efficiency",condc};
-HPCprRatio = (dataOD{"HPC Exit Pressure P3",2}/dataOD{"HPC Inlet Pressure P25",2})/(data{"HPC Exit Pressure P3",condc}/data{"HPC Inlet Pressure P25",condc});
+HPCprRatio = ((data{"HPC Exit Pressure P3",condc}/data{"HPC Inlet Pressure P25",condc})-1)/((dataOD{"HPC Exit Pressure P3",2}/dataOD{"HPC Inlet Pressure P25",2})-1);
 HPCrpmRatio = dataOD{"Nominal HP Spool Speed [RPM]",2}/data{"HP Spool Speed [RPM]",condc};
 HPCTRatio = dataOD{"HPC Exit Temperature T3",2}/data{"HPC Exit Temperature T3",condc};
 HPCPRatio = dataOD{"HPC Exit Pressure P3",2}/data{"HPC Exit Pressure P3",condc};
 
 %HPT
 HPTeffRatio = dataOD{"Polytropic HPT Efficiency",2}/data{"Polytropic HPT Efficiency",condt};
-HPTprRatio = (dataOD{"Burner Exit Pressure P4",2}/dataOD{"HPT Exit Pressure P44",2})/(data{"Burner Exit Pressure P4",condt}/data{"HPT Exit Pressure P44",condt});
+HPTprRatio = ((data{"Burner Exit Pressure P4",condt}/data{"HPT Exit Pressure P44",condt})-1)/((dataOD{"Burner Exit Pressure P4",2}/dataOD{"HPT Exit Pressure P44",2})-1);
 HPTrpmRatio = dataOD{"Nominal HP Spool Speed [RPM]",2}/data{"HP Spool Speed [RPM]",condt};
 HPTTRatio = dataOD{"LPT Inlet Temperature T45",2}/data{"LPT Inlet Temperature T45",condt};
 HPTPRatio = dataOD{"HPT Exit Pressure P44",2}/data{"HPT Exit Pressure P44",condt};
 
 %LPT
 LPTeffRatio = dataOD{"Polytropic LPT Efficiency",2}/data{"Polytropic LPT Efficiency",condlt};
-LPTprRatio = (dataOD{"LPT Inlet Pressure P45",2}/dataOD{"LPT Exit Pressure P5",2})/(data{"LPT Inlet Pressure P45",condlt}/data{"LPT Exit Pressure P5",condlt});
+LPTprRatio = ((data{"LPT Inlet Pressure P45",condlt}/data{"LPT Exit Pressure P5",condlt})-1)/((dataOD{"LPT Inlet Pressure P45",2}/dataOD{"LPT Exit Pressure P5",2})-1);
 LPTrpmRatio = dataOD{"Nominal LP Spool Speed [RPM]",2}/data{"LP Spool Speed [RPM]",condlt};
 LPTTRatio = dataOD{"LPT Exit Temperature T5",2}/data{"LPT Exit Temperature T5",condlt};
 LPTPRatio = dataOD{"LPT Exit Pressure P5",2}/data{"LPT Exit Pressure P5",condlt};
@@ -134,32 +134,32 @@ fprintf("==================================================================\n")
 
 %% OD Values
 %LPC
-LPCeff = 0.929*LPCeffRatio;
-LPCpr = 1.99*LPCprRatio;
+LPCeff = 0.93*LPCeffRatio;
+LPCpr = (2.09-1)/LPCprRatio+1;
 LPCrpmd = 10820.73*LPCrpmRatio;
-LPCt = 296.89*LPCTRatio;
-LPCp = 57.97*LPCPRatio;
+LPCt = 203.89*LPCTRatio;
+LPCp = 62.57*LPCPRatio;
 
 %HPC
 HPCeff = 0.873*HPCeffRatio;
-HPCpr = 9.06*HPCprRatio;
+HPCpr = (9.06-1)/HPCprRatio+1;
 HPCrpmd = 21079.32*HPCrpmRatio;
 HPCt = 617.78*HPCTRatio;
 HPCp = 690.73*HPCPRatio;
 
 %HPT
 HPTeff = 0.869*HPTeffRatio;
-HPTpr = 3.32*HPTprRatio;
+HPTpr = (3.32-1)/HPTprRatio+1;
 HPTrpmd = 22203.79*HPTrpmRatio;
 HPTt = 1132.57*HPTTRatio;
 HPTp = 445.73*HPTPRatio;
 
 %LPT
-LPTeff = 0.945*LPTeffRatio;
-LPTpr = 2.31*LPTprRatio;
+LPTeff = 0.902*LPTeffRatio;
+LPTpr = (2.55-1)*LPTprRatio+1;
 LPTrpmd = 11265.87*LPTrpmRatio;
-LPTt = 931.49*LPTTRatio;
-LPTp = 192.74*LPTPRatio;
+LPTt = 918.77*LPTTRatio;
+LPTp = 174.59*LPTPRatio;
 
 fprintf("\nLPC  η : %f\n",LPCeff)
 fprintf("LPC  PR  : %f\n",LPCpr)
