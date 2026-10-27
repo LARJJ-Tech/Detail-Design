@@ -155,4 +155,3 @@ Pt0_eff_calc = Ps0_eff_calc*(1+((gamma-1)/2)*M0_eff_calc^2)^(gamma/(gamma-1));
 Isen_Eff = ((Pt2_eff_calc / Ps0_eff_calc)^((gamma-1)/gamma) - 1) / ((Pt0_eff_calc / Ps0_eff_calc)^((gamma-1)/gamma) - 1)
 
 Pt2_over_Pt0 = ((1 + Isen_Eff * (((gamma-1)/2) * M0_eff_calc^2)) / (1 + ((gamma-1)/2) * M0_eff_calc^2))^(gamma/(gamma-1))
-
