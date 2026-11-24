@@ -134,30 +134,30 @@ fprintf("==================================================================\n")
 
 %% OD Values
 %LPC
-LPCeff = 0.93*LPCeffRatio;
-LPCpr = (2.13-1)/LPCprRatio+1;
+LPCeff = 0.920*LPCeffRatio;
+LPCpr = (2.17-1)/LPCprRatio+1;
 LPCrpmd = 10820.73*LPCrpmRatio;
-% LPCt = 203.89*LPCTRatio;
+ % LPCt = 203.89*LPCTRatio;
 % LPCp = 62.57*LPCPRatio;
 
 %HPC
 HPCeff = 0.872*HPCeffRatio;
-HPCpr = (8.99-1)/HPCprRatio+1;
+HPCpr = (8.88-1)/HPCprRatio+1;
 HPCrpmd = 21079.32*HPCrpmRatio;
 % HPCt = 617.78*HPCTRatio;
 % HPCp = 690.73*HPCPRatio;
 
 %HPT
-HPTeff = 0.873*HPTeffRatio;
-HPTpr = (2.96-1)/HPTprRatio+1;
-HPTrpmd = 22203.79*HPTrpmRatio;
+HPTeff = 0.871*HPTeffRatio;
+HPTpr = (3.13-1)/HPTprRatio+1;
+HPTrpmd = 22209.24*HPTrpmRatio;
 % HPTt = 1132.57*HPTTRatio;
 % HPTp = 445.73*HPTPRatio;
 
 %LPT
-LPTeff = 0.904*LPTeffRatio;
-LPTpr = (2.16-1)*LPTprRatio+1;
-LPTrpmd = 11265.87*LPTrpmRatio;
+LPTeff = 0.903*LPTeffRatio;
+LPTpr = (2.28-1)*LPTprRatio+1;
+LPTrpmd = 11264.67*LPTrpmRatio;
 % LPTt = 918.77*LPTTRatio;
 % LPTp = 174.59*LPTPRatio;
 
@@ -188,5 +188,5 @@ fprintf("==================================================================\n")
 
 data(["Total Mass Flow W2","Inlet Temperature T2","Inlet Pressure P2","LPC Outer Pressure Ratio"],condf)
 data(["HPC Inlet Flow W25","Fan Inner Exit Temp T21","HPC Inlet Pressure P25","HPC Pressure Ratio"],condc)
-data(["HPT Power","HPT Rotor Inlet Flow W41","Burner Fuel Flow","Burner Exit Temperature T4","Burner Exit Pressure P4"],condt)
+data(["HPT Power","HPT Rotor Inlet Flow W41","Burner Fuel Flow","HPT Rotor Inlet Temp T41","Burner Exit Pressure P4"],condt)
 data(["LPT Power","LPT Inlet Flow W45","Burner Fuel Flow","LPT Inlet Temperature T45","LPT Inlet Pressure P45"],condlt)
